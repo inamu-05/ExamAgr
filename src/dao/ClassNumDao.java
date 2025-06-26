@@ -3,45 +3,100 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import bean.ClassNum;
+import bean.School;
 
 public class ClassNumDao extends Dao {
 
-	public ClassNum get(String class_num School school) throws Exception {
-		ClassNum ClassNum = new ClassNum();
-		Connection connection = getConnection();
-		PreparedStatement statement = null;
+    public ClassNum get(String class_num, School school) throws Exception {
+        ClassNum result = null;
+        Connection con = getConnection();
 
-		try {
-			statement = connection.prepareStatement("select * from ClassNum");
-			statement.setString(1, id);
-			ResultSet resultSet = statement.executeQuery();
+        try {
+            String sql = "SELECT * FROM class_num WHERE class_num = ? AND school_cd = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, class_num);
+            st.setString(2, school.getCd());
 
-			if (resultSet.next()) {
-				ClassNum.setClass_num(resultSet.getString("class_num"));
-			} else {
-				ClassNum = null;
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
-		return ClassNum;
-	}
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                result = new ClassNum();
+                result.setClass_num(rs.getString("class_num"));
+
+                School s = new School();
+                s.setCd(rs.getString("school_cd"));
+                result.setSchool(s);
+            }
+
+            st.close();
+        } finally {
+            con.close();
+        }
+
+        return result;
+    }
+
+    public List<String> filter(School school) throws Exception {
+        List<String> list = new ArrayList<>();
+        Connection con = getConnection();
+
+        try {
+            String sql = "SELECT class_num FROM class_num WHERE school_cd = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, school.getCd());
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString("class_num"));
+            }
+
+            st.close();
+        } finally {
+            con.close();
+        }
+
+        return list;
+    }
+
+    public boolean save(ClassNum classNum) throws Exception {
+        Connection con = getConnection();
+
+        try {
+            String sql = "INSERT INTO class_num (class_num, school_cd) VALUES (?, ?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, classNum.getClass_num());
+            st.setString(2, classNum.getSchool().getCd());
+
+            int count = st.executeUpdate();
+            st.close();
+
+            return count > 0;
+
+        } finally {
+            con.close();
+        }
+    }
+
+    public boolean save(ClassNum classNum, String newClassNum) throws Exception {
+        Connection con = getConnection();
+
+        try {
+            String sql = "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, newClassNum);
+            st.setString(2, classNum.getClass_num());
+            st.setString(3, classNum.getSchool().getCd());
+
+            int count = st.executeUpdate();
+            st.close();
+
+            return count > 0;
+
+        } finally {
+            con.close();
+        }
+    }
 }
