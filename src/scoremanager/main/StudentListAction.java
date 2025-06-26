@@ -88,7 +88,7 @@ public class StudentListAction extends Action {
         // ==============================
         req.setAttribute("students", studentList);     // 検索結果の学生リスト
         req.setAttribute("classNumList", classNumList); // クラスのプルダウン用リスト
-        req.setAttribute("entYearList", entYearList);   // 入学年度のプルダウン用リスト
+        req.setAttribute("entYearList", entYearList);   // 入学年度のプルダウン用リストお
 
         // 学生一覧画面にフォワード
         req.getRequestDispatcher("student_list.jsp").forward(req, res);
