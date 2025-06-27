@@ -2,6 +2,8 @@ package bean;
 
 import java.io.Serializable;
 
+import javax.security.auth.Subject;
+
 public class Test implements Serializable {
 
 	/**
@@ -59,7 +61,7 @@ public class Test implements Serializable {
 		return subject;
 	}
 
-	public void setSubject(Subject subject) {
+	public void setSubject(Subject  subject) {
 		this.subject = subject;
 	}
 
