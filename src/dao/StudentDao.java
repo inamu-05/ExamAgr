@@ -19,61 +19,31 @@ public class StudentDao extends Dao {
 	 * @return 学生クラスのインスタンス 存在しない場合はnull
 	 * @throws Exception
 	 */
-	public Student get(String id) throws Exception {
-		// 学生インスタンスを初期化
-		Student student = new Student();
-		// コネクションを確立
-		Connection connection = getConnection();
-		// プリペアードステートメント
-		PreparedStatement statement = null;
+	public Student get(String no) throws Exception {
+	    Student student = null;
+	    Connection connection = getConnection();
+	    PreparedStatement statement = null;
 
-		try {
-			// プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("select * from student where id=?");
-			// プリペアードステートメントに学生IDをバインド
-			statement.setString(1, id);
-			// プリペアードステートメントを実行
-			ResultSet resultSet = statement.executeQuery();
+	    try {
+	        statement = connection.prepareStatement("select * from student where no=?");
+	        statement.setString(1, no);
+	        ResultSet resultSet = statement.executeQuery();
 
-
-			if (resultSet.next()) {
-				// リザルトセットが存在する場合
-				// 学生インスタンスに検索結果をセット
-				student.setNo(resultSet.getString("no"));
-				student.setName(resultSet.getString("name"));
-				student.setEntYear(resultSet.getInt("ent_year"));
-				student.setClassNum(resultSet.getString("class_num"));
-				student.setisAttend(resultSet.getBoolean("is_attend"));
-
-			} else {
-				// リザルトセットが存在しない場合
-				// 学生インスタンスにnullをセット
-				student = null;
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			// プリペアードステートメントを閉じる
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-			// コネクションを閉じる
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
-
-
-		return student;
+	        if (resultSet.next()) {
+	            student = new Student();
+	            student.setNo(resultSet.getString("no"));
+	            student.setName(resultSet.getString("name"));
+	            student.setEntYear(resultSet.getInt("ent_year"));
+	            student.setClassNum(resultSet.getString("class_num"));
+	            student.setisAttend(resultSet.getBoolean("is_attend"));
+	        }
+	    } finally {
+	        if (statement != null) statement.close();
+	        if (connection != null) connection.close();
+	    }
+	    return student;
 	}
+
 
 	 public List<Student> postFilter(ResultSet resultSet, School school) throws Exception {
 	        List<Student> list = new ArrayList<>();
@@ -93,78 +63,71 @@ public class StudentDao extends Dao {
 	 }
 
 	 public List<Student> filter(School school, int entYear, String classNum, boolean isAttend) throws Exception {
-	        List<Student> list = new ArrayList<>();
-	        Connection con = getConnection();
+		    List<Student> list = new ArrayList<>();
+		    Connection con = getConnection();
 
-
-	        try{
-	        	 PreparedStatement statement   = con.prepareStatement("SELECT * FROM student WHERE school_id = ?"
-	 	    			+ " AND ent_year = ? AND class_num = ? AND is_attend = ?"
-	 	    		);
-	    		statement.setInt(1,entYear);
-	    		statement.setString(2,classNum);
-	    		statement.setBoolean(3,isAttend);
-
-		        ResultSet resultSet = statement.executeQuery();
-	            list = postFilter(resultSet, school);
-	            statement.close();
-
-	            }
-	        finally {
-				con.close();
-	        }
-
-	        return list;
-	 }
-
-	 public List<Student> filter(School school, int entYear, boolean isAttend) throws Exception {
-	        List<Student> list = new ArrayList<>();
-	        Connection con = getConnection();
-
-
-	        try{
-	        	 PreparedStatement statement   = con.prepareStatement("SELECT * FROM student WHERE school_id = ?"
-	 	    			+ " AND ent_year = ? AND is_attend = ?"
-	 	    		);
-	    		statement.setInt(1,entYear);
-	    		statement.setBoolean(2,isAttend);
+		    try {
+		        PreparedStatement statement = con.prepareStatement(
+		            "SELECT * FROM student WHERE school_cd = ? AND ent_year = ? AND class_num = ? AND is_attend = ?"
+		        );
+		        statement.setString(1, school.getCd());   // 学校コード
+		        statement.setInt(2, entYear);             // 入学年度
+		        statement.setString(3, classNum);         // クラス
+		        statement.setBoolean(4, isAttend);        // 在学中フラグ
 
 		        ResultSet resultSet = statement.executeQuery();
-	            list = postFilter(resultSet, school);
-	            statement.close();
+		        list = postFilter(resultSet, school);
+		        statement.close();
+		    } finally {
+		        con.close();
+		    }
 
-	            }
-	        finally {
-				con.close();
-	        }
+		    return list;
+		}
 
-	        return list;
-	 }
+		public List<Student> filter(School school, int entYear, boolean isAttend) throws Exception {
+		    List<Student> list = new ArrayList<>();
+		    Connection con = getConnection();
 
-	 public List<Student> filter(School school, boolean isAttend) throws Exception {
-	        List<Student> list = new ArrayList<>();
-	        Connection con = getConnection();
-
-
-	        try{
-	        	PreparedStatement statement = con.prepareStatement(
-	        		    "SELECT * FROM student WHERE school_cd = ? AND is_attend = ?"
-	        		);
-	        		statement.setString(1, school.getCd());  // 学校コードをセット
-	        		statement.setBoolean(2, isAttend);       // 在学中フラグをセット
-
-
+		    try {
+		        PreparedStatement statement = con.prepareStatement(
+		            "SELECT * FROM student WHERE school_cd = ? AND ent_year = ? AND is_attend = ?"
+		        );
+		        statement.setString(1, school.getCd());   // 学校コード
+		        statement.setInt(2, entYear);             // 入学年度
+		        statement.setBoolean(3, isAttend);        // 在学中フラグ
 
 		        ResultSet resultSet = statement.executeQuery();
-	            list = postFilter(resultSet, school);
-	            statement.close();
-	            }
-	        finally {
-				con.close();
-	        }
+		        list = postFilter(resultSet, school);
+		        statement.close();
+		    } finally {
+		        con.close();
+		    }
 
-	        return list;
-	 }
+		    return list;
+		}
+
+		public List<Student> filter(School school, boolean isAttend) throws Exception {
+		    List<Student> list = new ArrayList<>();
+		    Connection con = getConnection();
+
+		    try {
+		        PreparedStatement statement = con.prepareStatement(
+		            "SELECT * FROM student WHERE school_cd = ? AND is_attend = ?"
+		        );
+		        statement.setString(1, school.getCd());   // 学校コード
+		        statement.setBoolean(2, isAttend);        // 在学中フラグ
+
+		        ResultSet resultSet = statement.executeQuery();
+		        list = postFilter(resultSet, school);
+		        statement.close();
+		    } finally {
+		        con.close();
+		    }
+
+		    return list;
+		}
+
 
 	 public boolean save(Student student) throws Exception {
 		    Connection connection = null;
@@ -188,22 +151,24 @@ public class StudentDao extends Dao {
 
 		        if (exists) {
 		            // UPDATE 処理
-		            String updateSql = "UPDATE student "
-		            		+ "SET name = ?, ent_year = ?, class_num = ?, is_attend = ? WHERE no = ?";
+		            String updateSql = "UPDATE student SET name = ?, ent_year = ?, class_num = ?, is_attend = ?, school_cd = ? WHERE no = ?";
 		            statement = connection.prepareStatement(updateSql);
 		            statement.setString(1, student.getName());
 		            statement.setInt(2, student.getEntYear());
 		            statement.setString(3, student.getClassNum());
-		            statement.setString(4, student.getNo());
+		            statement.setBoolean(4, student.getisAttend());
+		            statement.setString(5, student.getSchool().getCd());
+		            statement.setString(6, student.getNo());
 		        } else {
 		            // INSERT 処理
-		            String insertSql = "INSERT INTO student "
-		            		+ "(no, name, ent_year, class_num) VALUES (?, ?, ?, ?)";
+		            String insertSql = "INSERT INTO student (no, name, ent_year, class_num, is_attend, school_cd) VALUES (?, ?, ?, ?, ?, ?)";
 		            statement = connection.prepareStatement(insertSql);
 		            statement.setString(1, student.getNo());
 		            statement.setString(2, student.getName());
 		            statement.setInt(3, student.getEntYear());
 		            statement.setString(4, student.getClassNum());
+		            statement.setBoolean(5, student.getisAttend());
+		            statement.setString(6, student.getSchool().getCd());
 		        }
 
 		        int rowsAffected = statement.executeUpdate();

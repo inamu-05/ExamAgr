@@ -56,6 +56,10 @@ public class StudentListAction extends Action {
         StudentDao studentDao = new StudentDao();
         List<Student> studentList;
 
+        if (entYear != null && (classNumParam == null || classNumParam.isEmpty())) {
+            isAttend = true;
+        }
+
         if (entYear != null && classNumParam != null && !classNumParam.isEmpty()) {
             // 入学年度・クラスともに指定された場合
             studentList = studentDao.filter(school, entYear, classNumParam, isAttend);
