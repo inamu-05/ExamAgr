@@ -8,10 +8,12 @@
 <title></title>
 <script>
 //ログインページにリダイレクト
-location.href="/exam_sample/scoremanager/Login.action";
+location.href="/exam/scoremanager/Login.action";
 </script>
 </head>
 <body>
 
 </body>
 </html>
+
+

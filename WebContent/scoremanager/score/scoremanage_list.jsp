@@ -44,14 +44,12 @@
 	</style>
 
 	    <section class="me-4">
-	<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生管理</h2>
-	<div style="text-align: right;">
-	  <a href="StudentCreate.action">新規登録</a>
-	</div>
+	<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
 
 	      <!-- フィルター -->
 	<div style="background: #fff; border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin: 0 16px 16px 16px;">
-	<form action="StudentList.action" method="post" class="px-4 mb-3">
+	<form action="TestRegist.action" method="get" class="px-4 mb-3">
+
 	  <label class="me-2">入学年度：</label>
 	  <select name="entYear" class="me-4">
 	    <option value="">----</option>
@@ -63,52 +61,32 @@
 	  <label class="me-2">クラス：</label>
 	  <select name="classNum" class="me-4">
 	    <option value="">----</option>
-	    <c:forEach var="c" items="${classNumList}">
-	      <option value="${c}" <c:if test="${param.classNum == c}">selected</c:if>>${c}</option>
+	    <c:forEach var="cls" items="${classNumList}">
+	      <option value="${cls}" <c:if test="${param.classNum == cls}">selected</c:if>>${cls}</option>
 	    </c:forEach>
 	  </select>
 
-	  <label class="me-3">
-	    <input type="checkbox" name="isAttend" value="true" <c:if test="${param.isAttend == 'true'}">checked</c:if>> 在学中
-	  </label>
+	  	  <label class="me-2">科目：</label>
+	  <select name="subNum" class="me-4">
+	    <option value="">----</option>
+	    <c:forEach var="subject" items="${subNumList}">
+	      <option value="${subject}" <c:if test="${param.subNum == subject}">selected</c:if>>${subject}</option>
+	    </c:forEach>
+	  </select>
 
-	  <button type="submit" class="filter-btn me-3">絞込み</button>
+	  	  <label class="me-2">回数：</label>
+	  <select name="testNum" class="me-4">
+	    <option value="">----</option>
+	    <c:forEach var="number" items="${testNumList}">
+	      <option value="${number}" <c:if test="${param.testNum == number}">selected</c:if>>${number}</option>
+	    </c:forEach>
+	  </select>
+
+
+	  <button type="submit" class="filter-btn me-3">検索</button>
 	</form>
 	</div>
 
-	      <!-- 結果件数 -->
-	<div class="px-4 mb-2">検索結果：${fn:length(students)}件</div>
-
-      <!-- 一覧 -->
-	<table class="table mb-5" style="border-collapse: collapse;">
-		<thead>
-			<tr>
-				<th class="ps-4">入学年度</th>
-				<th>学生番号</th>
-				<th>氏名</th>
-				<th>クラス</th>
-				<th>在学中</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="student" items="${students}">
-			<tr>
-				<td class="ps-4">${student.entYear}</td>
-				<td>${student.no}</td>
-				<td>${student.name}</td>
-				<td>${student.classNum}</td>
-				<td>
-					<c:choose>
-					<c:when test="${student.isAttend}">○</c:when>
-					<c:otherwise>×</c:otherwise>
-					</c:choose>
-				</td>
-				<td><a href="StudentEdit.action?no=${student.no}">変更</a></td>
-			</tr>
-			</c:forEach>
-		</tbody>
-</table>
 </section>
 </c:param>
 </c:import>

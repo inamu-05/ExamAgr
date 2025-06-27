@@ -147,10 +147,13 @@ public class StudentDao extends Dao {
 
 
 	        try{
-	        	 PreparedStatement statement   = con.prepareStatement("SELECT * FROM student WHERE school_id = ?"
-	 	    			+ " AND ent_year = ? AND is_attend = ?"
-	 	    		);
-	    		statement.setBoolean(1,isAttend);
+	        	PreparedStatement statement = con.prepareStatement(
+	        		    "SELECT * FROM student WHERE school_cd = ? AND is_attend = ?"
+	        		);
+	        		statement.setString(1, school.getCd());  // 学校コードをセット
+	        		statement.setBoolean(2, isAttend);       // 在学中フラグをセット
+
+
 
 		        ResultSet resultSet = statement.executeQuery();
 	            list = postFilter(resultSet, school);
