@@ -50,7 +50,7 @@
     <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生情報登録</h2>
 
     <div class="form-box">
-        <form action="StudentCreate.action" method="post">
+        <form action="StudentCreateExecite.action" method="post">
 
             <label class="form-label">入学年度</label>
             <select name="entYear">

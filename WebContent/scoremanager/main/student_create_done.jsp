@@ -59,18 +59,17 @@
     <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生情報登録</h2>
 
 	     <!-- メッセージ表示枠 -->
-	    <c:if test="${not empty message}">
-	        <div class="message-box">
+
+	        <p class="text-center" style="background-color:#66CC99">
 	            ${message}
-	        </div>
-	    </c:if>
+	        </p>
 
 
         <div class="mt-2">
-            <a href="StudentCreate.Action">戻る</a>
+            <a href="StudentCreate.action">戻る</a>
 
 	        <div style="text-align: right;">
-	            <a href="StudentList.Action">学生一覧</a>
+	            <a href="StudentList.action">学生一覧</a>
 	        </div>
 	    </div>
 </section>
