@@ -60,7 +60,8 @@
 
 
             <label class="form-label">氏名</label>
-            <input type="text" name="name" value="${student.name}" placeholder="氏名を入力してください"/>
+			<input type="text" name="name" value="${student.name}" placeholder="氏名を入力してください" required />
+
 
             <label class="form-label">クラス</label>
             <select name="classNum">

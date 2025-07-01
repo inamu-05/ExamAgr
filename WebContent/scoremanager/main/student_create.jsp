@@ -44,6 +44,12 @@
         display: block;
         margin: 8px 0 4px 0;
     }
+
+    .error-message {
+        color: orange;
+        font-size: 0.9em;
+        margin-top: 4px;
+    }
 </style>
 
 <section class="me-4">
@@ -53,25 +59,37 @@
         <form action="StudentCreateExecite.action" method="post">
 
             <label class="form-label">入学年度</label>
-            <select name="entYear">
-                <option value="">------</option>
-                <c:forEach var="year" items="${entYearList}">
-                    <option value="${year}" <c:if test="${param.entYear == year}">selected</c:if>>${year}</option>
-                </c:forEach>
-            </select>
+			<select name="entYear">
+			    <option value="">------</option>
+			    <c:forEach var="year" items="${entYearList}">
+			        <option value="${year}" <c:if test="${param.entYear == year || entYear == year}">selected</c:if>>${year}</option>
+			    </c:forEach>
+			</select>
+			<c:if test="${not empty errorEntYear}">
+			    <div class="error-message">${errorEntYear}</div>
+			</c:if>
 
-            <label class="form-label">学生番号</label>
-            <input type="text" name="stuNum" placeholder="学生番号を入力してください" value="${param.stuNum}"/>
+			<label class="form-label">学生番号</label>
+			<input type="text" name="stuNum" placeholder="学生番号を入力してください" value="${param.stuNum != null ? param.stuNum : stuNum}" required />
+			<c:if test="${not empty errorStuNum}">
+			    <div class="error-message">${errorStuNum}</div>
+			</c:if>
 
             <label class="form-label">氏名</label>
-            <input type="text" name="name" placeholder="氏名を入力してください" value="${param.name}"/>
+            <input type="text" name="name" placeholder="氏名を入力してください" value="${param.name != null ? param.name : name}" required />
+            <c:if test="${not empty errorName}">
+                <div class="error-message">${errorName}</div>
+            </c:if>
 
             <label class="form-label">クラス</label>
             <select name="classNum">
                 <c:forEach var="c" items="${classNumList}">
-                    <option value="${c}" <c:if test="${param.classNum == c}">selected</c:if>>${c}</option>
+                    <option value="${c}" <c:if test="${param.classNum == c || classNum == c}">selected</c:if>>${c}</option>
                 </c:forEach>
             </select>
+            <c:if test="${not empty errorClassNum}">
+                <div class="error-message">${errorClassNum}</div>
+            </c:if>
 
             <div class="mt-3">
                 <button type="submit" class="submit-btn">登録して終了</button>

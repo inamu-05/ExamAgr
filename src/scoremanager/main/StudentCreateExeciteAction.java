@@ -29,13 +29,31 @@ public class StudentCreateExeciteAction extends Action {
         String classNum = req.getParameter("classNum");   // クラス
 
         // 入力チェック：未入力の項目がある場合はエラーメッセージを設定し、登録画面に戻す
-        if (entYearStr == null || stuNum == null || name == null || classNum == null ||
-            entYearStr.isEmpty() || stuNum.isEmpty() || name.isEmpty() || classNum.isEmpty()) {
+        boolean hasError = false;
 
-            req.setAttribute("error", "すべての項目を入力してください。");
-            req.getRequestDispatcher("student_create.jsp").forward(req, res);
-            return;
-        }
+     // 入学年度チェック
+     if (entYearStr == null || entYearStr.isEmpty()) {
+         req.setAttribute("errorEntYear", "入学年度を選択してください");
+         hasError = true;
+     }
+
+     // 学生番号チェック
+     StudentDao dao = new StudentDao();
+     Student existingStudent = dao.get(stuNum);
+
+     if (existingStudent != null) {
+         // 重複ありのためエラー表示
+         req.setAttribute("errorStuNum", "この学生番号はすでに使われています");
+         req.getRequestDispatcher("StudentCreate.action").forward(req, res);
+         return;
+     }
+
+
+     if (hasError) {
+         // 入力エラーがあれば元の入力画面に戻す
+         req.getRequestDispatcher("StudentCreate.action").forward(req, res);
+         return;
+     }
 
         // 学生情報をセット
         Student student = new Student();
@@ -47,7 +65,6 @@ public class StudentCreateExeciteAction extends Action {
         student.setSchool(teacher.getSchool());             // ログイン中教員の所属学校をセット
 
         // 学生情報をデータベースへ保存
-        StudentDao dao = new StudentDao();
         boolean result = dao.save(student);
 
         if (result) {
