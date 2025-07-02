@@ -27,7 +27,7 @@
             <td class="ps-4">${subjects.cd}</td>
             <td>${subjects.name}</td>
             <td><a href="SubjectEdit.action?cd=${subjects.cd}">変更</a></td>
-            <td><a href="SubjectEdit.action?cd=${subjects.cd}">削除</a></td>
+            <td><a href="SubjectDelete.action?cd=${subjects.cd}">削除</a></td>
           </tr>
         </c:forEach>
       </tbody>

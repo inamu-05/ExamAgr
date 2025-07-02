@@ -48,7 +48,7 @@ public class StudentCreateAction extends Action {
         // ==============================
         List<Integer> entYearList = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);  // 現在の西暦を取得
-        for (int year = 2023; year <= currentYear; year++) {
+        for (int year = 2020; year <= currentYear; year++) {
             entYearList.add(year);
         }
 
