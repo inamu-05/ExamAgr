@@ -12,9 +12,9 @@ import bean.Subject;
 import bean.Test;
 
 /**
- * 成績情報（Test）を扱うDAOクラス。
- * データベースからの取得・保存・フィルタ処理を担当。
- */
+* 成績情報（Test）を扱うDAOクラス。
+* データベースからの取得・保存・フィルタ処理を担当。
+*/
 public class TestDao extends Dao {
 
     /** ベースSQL（WHERE句を追加して利用） */

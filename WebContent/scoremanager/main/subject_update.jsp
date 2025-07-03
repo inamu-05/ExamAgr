@@ -20,13 +20,13 @@
     }
 
     .submit-btn {
-        background-color: #666;
+        background-color:blue;
         border: 1px solid #444;
         color: white;
-        padding: 8px 24px;
+        padding: 8px 16px;
         border-radius: 4px;
         font-weight: bold;
-        width: 200px;
+        width: 80px;
     }
 
     .submit-btn:hover {
@@ -63,7 +63,7 @@
 </style>
 
 <section class="me-4">
-    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">科目情報編集</h2>
+    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 
     <c:if test="${not empty message}">
         <div class="error-message">${message}</div>
@@ -82,7 +82,7 @@
 
         <input type="hidden" name="school_cd" value="${subject.school.cd}" />
 
-        <div style="margin-top: 24px;">
+        <div style="margin-top: 12px;">
             <button type="submit" class="submit-btn">変更</button>
         </div>
     </form>

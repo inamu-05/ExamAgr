@@ -23,7 +23,7 @@ public class TestRegistAction extends Action{
             // req.setAttribute("subjectList", subjectDao.filter(school));
 
             // JSPへフォワード
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/scoremanager/scoremanage_list.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("scoremanage_list.jsp");
             dispatcher.forward(req, res);
 
         } catch (Exception e) {
