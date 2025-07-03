@@ -63,45 +63,25 @@
 </style>
 
 <section class="me-4">
-    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生情報登録</h2>
+    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">科目情報登録</h2>
 
-    <form action="StudentCreateExecite.action" method="post">
+    <form action="SubjectCreateExecite.action" method="post">
 
-        <label class="form-label">入学年度</label>
-        <select name="entYear">
-            <option value="">------</option>
-            <c:forEach var="year" items="${entYearList}">
-                <option value="${year}" <c:if test="${param.entYear == year || entYear == year}">selected</c:if>>${year}</option>
-            </c:forEach>
-        </select>
-        <c:if test="${not empty errorEntYear}">
-            <div class="error-message">${errorEntYear}</div>
-        </c:if>
 
-        <label class="form-label">学生番号</label>
-        <input type="text" name="stuNum" placeholder="学生番号を入力してください" value="${param.stuNum != null ? param.stuNum : stuNum}" required />
+        <label class="form-label">科目コード</label>
+        <input type="text" name="sbcd" placeholder="科目コードを入力してください" required />
         <c:if test="${not empty errorStuNum}">
             <div class="error-message">${errorStuNum}</div>
         </c:if>
 
-        <label class="form-label">氏名</label>
-        <input type="text" name="name" placeholder="氏名を入力してください" value="${param.name != null ? param.name : name}" required />
+        <label class="form-label">科目名</label>
+        <input type="text" name="sbname" placeholder="科目名を入力してください" required />
         <c:if test="${not empty errorName}">
             <div class="error-message">${errorName}</div>
         </c:if>
 
-        <label class="form-label">クラス</label>
-        <select name="classNum">
-            <c:forEach var="c" items="${classNumList}">
-                <option value="${c}" <c:if test="${param.classNum == c || classNum == c}">selected</c:if>>${c}</option>
-            </c:forEach>
-        </select>
-        <c:if test="${not empty errorClassNum}">
-            <div class="error-message">${errorClassNum}</div>
-        </c:if>
-
         <div style="margin-top: 24px;">
-            <button type="submit" class="submit-btn">登録して終了</button>
+            <button type="submit" class="submit-btn">登録</button>
         </div>
     </form>
 
