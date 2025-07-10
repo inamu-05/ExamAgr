@@ -11,10 +11,8 @@ import javax.servlet.http.HttpSession;
 import bean.School;
 import bean.Subject;
 import bean.Teacher;
-import bean.Test;
 import dao.ClassNumDao;
 import dao.SubjectDao;
-import dao.TestDao;
 import tool.Action;
 
 public class TestListAction extends Action {
@@ -39,9 +37,6 @@ public class TestListAction extends Action {
         String classNumParam = req.getParameter("classNum");
         String subjectCdParam = req.getParameter("subject"); // 科目コード
 
-        System.out.println("entYearParam = " + entYearParam);
-        System.out.println("classNumParam = " + classNumParam);
-        System.out.println("subjectCdParam = " + subjectCdParam);
 
         // 入学年度のパース
         Integer entYear = null;
@@ -62,28 +57,10 @@ public class TestListAction extends Action {
             entYearList.add(year);
         }
 
-        // 検索条件が揃っていれば成績情報を検索
-        List<Test> testList = new ArrayList<>();
-        if (entYear != null
-                && classNumParam != null && !classNumParam.isEmpty()
-                && subjectCdParam != null && !subjectCdParam.isEmpty()) {
-
-            Subject subject = new Subject();
-            subject.setCd(subjectCdParam);
-
-            TestDao testDao = new TestDao();
-
-            // 試験回数は例として固定値1に設定
-            int num = 1;
-
-            testList = testDao.filter(entYear, classNumParam, subject, num, school);
-        }
-
         // 画面表示用のリクエスト属性にセット
         req.setAttribute("subjectList", subjectList);
         req.setAttribute("classNumList", classNumList);
         req.setAttribute("entYearList", entYearList);
-        req.setAttribute("testList", testList);
 
         // JSPへフォワード
         req.getRequestDispatcher("test_list.jsp").forward(req, res);

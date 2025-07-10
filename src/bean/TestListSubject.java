@@ -26,10 +26,8 @@ public class TestListSubject extends User implements Serializable {
      */
     private String classNum;
 
-    /**
-     * 科目ごとの点数: Map<科目コード, 点数>
-     */
     private Map<Integer, Integer> points = new HashMap<>();
+
 
     // ゲッター・セッター
 
@@ -73,17 +71,11 @@ public class TestListSubject extends User implements Serializable {
         this.points = points;
     }
 
-    /**
-     * 科目コードを指定して点数を取得
-     */
-    public Integer getPoint(int key) {
-        return points.get(key);
+    public void setPoint(int time, int point) {
+        this.points.put(time, point);
     }
 
-    /**
-     * 科目コードと点数を指定して登録
-     */
-    public void setPoint(int key, int value) {
-        this.points.put(key, value);
+    public Integer getPoint(int time) {
+        return this.points.getOrDefault(time, null);
     }
 }
