@@ -27,7 +27,7 @@ ${param.scripts}
 			<c:if test="${user.isAuthenticated()}">
 				<div class="nav align-self-end">
 					<span class="nav-item px-2">${user.getName()}様</span>
-					<a class="nav-item px-2" href="/exam_login/scoremanager/main/Logout.action">ログアウト</a>
+					<a class="nav-item px-2" href="/exam/scoremanager/main/Logout.action">ログアウト</a>
 				</div>
 			</c:if>
 		</header>
@@ -39,13 +39,13 @@ ${param.scripts}
 					<nav class="col-3">
 
 						<ul class="nav nav-pills flex-column mb-auto px-4">
-							<li class="nav-item my-3"><a href="/exam_login/scoremanager/main/Menu.action">メニュー</a></li>
-							<li class="nav-item mb-3"><a href="/exam_login/scoremanager/main/StudentList.action">学生管理</a></li>
+							<li class="nav-item my-3"><a href="/exam/scoremanager/main/Menu.action">メニュー</a></li>
+							<li class="nav-item mb-3"><a href="/exam/scoremanager/main/StudentList.action">学生管理</a></li>
 							<li class="nav-item">成績管理</li>
-							<li class="nav-item mx-3 mb-3"><a href="/exam_login/scoremanager/main/TestRegist.action">成績登録</a></li>
-							<li class="nav-item mx-3 mb-3"><a href="/exam_login/scoremanager/main/TestList.action">成績参照</a></li>
-							<li class="nav-item mb-3"><a href="/exam_login/scoremanager/main/SubjectList.action">科目管理</a></li>
-							<li class="nav-item mb-3"><a href="/exam_login/scoremanager/main/ClassList.action">クラス管理</a></li>
+							<li class="nav-item mx-3 mb-3"><a href="/exam/scoremanager/main/TestRegist.action">成績登録</a></li>
+							<li class="nav-item mx-3 mb-3"><a href="/exam/scoremanager/main/TestList.action">成績参照</a></li>
+							<li class="nav-item mb-3"><a href="/exam/scoremanager/main/SubjectList.action">科目管理</a></li>
+							<li class="nav-item mb-3"><a href="/exam/scoremanager/main/ClassList.action">クラス管理</a></li>
 						</ul>
 
 					</nav>

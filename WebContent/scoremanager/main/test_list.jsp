@@ -27,58 +27,55 @@
 	<div style="background: #fff; border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin: 0 16px 16px 16px;">
 
 	    <!-- 科目情報 -->
-	    <p class="fw-bold mb-2">科目情報</p>
-
 	    <form action="TestListSubjectExecute.action" method="post" onsubmit="return validateForm();" class="mb-3">
-	        <!-- ラベルと入力欄横並び -->
-	        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
-	            <label>入学年度</label>
-	            <select name="entYear">
-	                <option value="">----</option>
-	                <c:forEach var="year" items="${entYearList}">
-	                    <option value="${year}" <c:if test="${param.entYear == year}">selected</c:if>>${year}</option>
-	                </c:forEach>
-	            </select>
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
+        <span class="fw-bold">科目情報</span>
 
-	            <label>クラス</label>
-	            <select name="classNum">
-	                <option value="">----</option>
-	                <c:forEach var="c" items="${classNumList}">
-	                    <option value="${c}" <c:if test="${param.classNum == c}">selected</c:if>>${c}</option>
-	                </c:forEach>
-	            </select>
+        <label>入学年度</label>
+        <select name="entYear">
+            <option value="">----</option>
+            <c:forEach var="year" items="${entYearList}">
+                <option value="${year}" <c:if test="${param.entYear == year}">selected</c:if>>${year}</option>
+            </c:forEach>
+        </select>
 
-	            <label>科目</label>
-	            <select name="subject">
-	                <option value="">----</option>
-	                <c:forEach var="c" items="${subjectList}">
-	                    <option value="${c.cd}" <c:if test="${param.subject == c.cd}">selected</c:if>>${c.name}</option>
-	                </c:forEach>
-	            </select>
+        <label>クラス</label>
+        <select name="classNum">
+            <option value="">----</option>
+            <c:forEach var="c" items="${classNumList}">
+                <option value="${c}" <c:if test="${param.classNum == c}">selected</c:if>>${c}</option>
+            </c:forEach>
+        </select>
 
-	            <button type="submit" class="filter-btn">検索</button>
-	        </div>
-	        <div id="error-message" class="text-danger mt-2"></div>
-	    </form>
+        <label>科目</label>
+        <select name="subject">
+            <option value="">----</option>
+            <c:forEach var="c" items="${subjectList}">
+                <option value="${c.cd}" <c:if test="${param.subject == c.cd}">selected</c:if>>${c.name}</option>
+            </c:forEach>
+        </select>
+
+        <button type="submit" class="filter-btn">検索</button>
+    </div>
+    <div id="error-message" class="text-danger mt-2"></div>
+</form>
 
 	    <!-- 区切り線 -->
 	    <hr>
 
 	    <!-- 学生情報 -->
-	    <p class="fw-bold mb-2">学生情報</p>
-
 	    <form action="TestListStudentExecute.action" method="post" onsubmit="return validateForm();">
-	        <div style="display: flex; align-items: center; gap: 16px;">
-	            <label>学生番号</label>
-	            <input type="text" name="stuNum" placeholder="学生番号を入力してください" value="${param.stuNum != null ? param.stuNum : stuNum}" required />
-	            <button type="submit" class="filter-btn">検索</button>
-	        </div>
+		    <div style="display: flex; align-items: center; gap: 16px;">
+		        <span class="fw-bold">学生情報</span>
+		        <label>学生番号</label>
+		        <input type="text" name="stuNum" placeholder="学生番号を入力してください" value="${param.stuNum != null ? param.stuNum : stuNum}" required />
+		        <button type="submit" class="filter-btn">検索</button>
+		    </div>
 
-	        <c:if test="${not empty errorStuNum}">
-	            <div class="error-message text-danger mt-2">${errorStuNum}</div>
-	        </c:if>
-	    </form>
-
+		    <c:if test="${not empty errorStuNum}">
+		        <div class="error-message text-danger mt-2">${errorStuNum}</div>
+		    </c:if>
+		</form>
 	</div>
 	<!-- まだ検索していない状態のメッセージ -->
 <c:if test="${empty isStudentSearch and empty isSubjectSearch}">
@@ -113,6 +110,15 @@
         </tbody>
     </table>
 </c:if>
+
+<!-- 学生検索結果が0件の場合の表示 -->
+<c:if test="${isStudentSearch and empty testListStudent}">
+    <div class="px-4 mb-2">学生：${student.name}（${student.no}）</div>
+    <div class="px-4 mb-4 fw-bold">
+        成績情報が存在しませんでした。
+    </div>
+</c:if>
+
 
 <!-- 科目検索結果表示 -->
 <c:if test="${isSubjectSearch and not empty testListSubject}">
@@ -156,6 +162,13 @@
             </c:forEach>
         </tbody>
     </table>
+</c:if>
+
+<!-- 科目検索結果が0件の場合の表示 -->
+<c:if test="${isSubjectSearch and (empty testListSubject)}">
+    <div class="px-4 mb-4 fw-bold">
+        学生情報が存在しませんでした。
+    </div>
 </c:if>
 
 </c:param>

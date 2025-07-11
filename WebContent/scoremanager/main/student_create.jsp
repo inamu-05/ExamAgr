@@ -79,13 +79,13 @@
         </c:if>
 
         <label class="form-label">学生番号</label>
-        <input type="text" name="stuNum" placeholder="学生番号を入力してください" value="${param.stuNum != null ? param.stuNum : stuNum}" required />
+        <input type="text" name="stuNum" maxlength="10" placeholder="学生番号を入力してください" value="${param.stuNum != null ? param.stuNum : stuNum}" required />
         <c:if test="${not empty errorStuNum}">
             <div class="error-message">${errorStuNum}</div>
         </c:if>
 
         <label class="form-label">氏名</label>
-        <input type="text" name="name" placeholder="氏名を入力してください" value="${param.name != null ? param.name : name}" required />
+        <input type="text" name="name"  maxlength="30"placeholder="氏名を入力してください" value="${param.name != null ? param.name : name}" required />
         <c:if test="${not empty errorName}">
             <div class="error-message">${errorName}</div>
         </c:if>
