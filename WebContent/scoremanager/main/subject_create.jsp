@@ -67,18 +67,18 @@
 
     <form action="SubjectCreateExecite.action" method="post">
 
-
         <label class="form-label">科目コード</label>
         <input type="text" name="sbcd" placeholder="科目コードを入力してください" required />
+
         <c:if test="${not empty errorStuNum}">
             <div class="error-message">${errorStuNum}</div>
+        </c:if>
+        <c:if test="${not empty errorDuplicate}">
+            <div class="error-message">${errorDuplicate}</div>
         </c:if>
 
         <label class="form-label">科目名</label>
         <input type="text" name="sbname" placeholder="科目名を入力してください" required />
-        <c:if test="${not empty errorName}">
-            <div class="error-message">${errorName}</div>
-        </c:if>
 
         <div style="margin-top: 24px;">
             <button type="submit" class="submit-btn">登録</button>
