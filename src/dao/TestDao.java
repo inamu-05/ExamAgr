@@ -18,7 +18,7 @@ import bean.Test;
 public class TestDao extends Dao {
 
     /** ベースSQL（WHERE句を追加して利用） */
-    private final String baseSql = "SELECT * FROM test WHERE 1=1";
+//    private final String baseSql = "SELECT * FROM test WHERE 1=1";
 
     /**
      * 指定された学生・科目・学校・回数に一致する成績情報を1件取得する。
@@ -30,89 +30,131 @@ public class TestDao extends Dao {
      * @return 該当するTestオブジェクト（存在しない場合はnull）
      * @throws Exception DBアクセス例外
      */
-    public Test get(Student student, Subject subject, School school, int no) throws Exception {
-        Test test = null;
+	public Test get(Student student, Subject subject, School school, int no) throws Exception {
+	    try (Connection connection = getConnection()) {
+	    	String sql = "SELECT t.*, s.name AS student_name" +
+	    			"FROM test t" +
+	    			"JOIN student s ON t.student_no = s.no" +
+	    			"WHERE t.student_no = ? AND t.subject_cd = ? AND t.school_cd = ? AND t.no = ?";
 
-        try (Connection connection = getConnection()) {
-            String sql = "SELECT * FROM test WHERE student_no = ? AND subject_cd = ? AND school_cd = ? AND no = ?";
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setString(1, student.getNo());
-                stmt.setString(2, subject.getCd());
-                stmt.setString(3, school.getCd());
-                stmt.setInt(4, no);
+	        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	            stmt.setString(1, student.getNo());
+	            stmt.setString(2, subject.getCd());
+	            stmt.setString(3, school.getCd());
+	            stmt.setInt(4, no);
 
-                ResultSet rs = stmt.executeQuery();
-                if (rs.next()) {
-                    test = postFilter(rs, school).get(0); // 1件取得
-                }
-            }
-        }
+	            ResultSet rs = stmt.executeQuery();
+	            List<Test> list = postFilter(rs, school, subject, no);
+	            if (!list.isEmpty()) {
+	                return list.get(0);
+	            }
+	        }
+	    }
 
-        return test;
-    }
+	    return null; // データが存在しない場合は null を返す
+	}
+
+
+	//（Connectionを渡せる安全な内部用）
+	private Test get(Student student, Subject subject, School school, int no, Connection connection) throws Exception {
+	    String sql = "SELECT t.*, s.name AS student_name " +
+	    	    "FROM test t " +
+	    	    "JOIN student s ON t.student_no = s.no " +
+	    	    "WHERE t.student_no = ? AND t.subject_cd = ? AND t.school_cd = ? AND t.no = ?";
+	    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+	        stmt.setString(1, student.getNo());
+	        stmt.setString(2, subject.getCd());
+	        stmt.setString(3, school.getCd());
+	        stmt.setInt(4, no);
+
+	        ResultSet rs = stmt.executeQuery();
+	        List<Test> list = postFilter(rs, school, subject, no);
+	        if (!list.isEmpty()) {
+	            return list.get(0);
+	        }
+	    }
+	    return null;
+	}
+
+
 
     /**
-     * ResultSetからTestオブジェクトのリストを生成する。
-     *
-     * @param rSet SQL実行結果
-     * @param school 学校情報（外部から渡される）
-     * @return Testオブジェクトのリスト
-     * @throws Exception DBアクセス例外
-     */
-    public List<Test> postFilter(ResultSet rSet, School school) throws Exception {
-        List<Test> list = new ArrayList<>();
+     * ResultSetからTestオブジェクトのリストを生成する。
+     *
+     * @param rSet SQL実行結果
+     * @param school 学校情報
+     * @return Testオブジェクトのリスト
+     * @throws Exception DBアクセス例外
+     */
 
-        while (rSet.next()) {
-            Test test = new Test();
+    public List<Test> postFilter(ResultSet rSet, School school, Subject subject, int num) throws Exception {
+    	List<Test> list = new ArrayList<>();
 
-            Student student = new Student();
-            student.setNo(rSet.getString("student_no"));
-            test.setStudent(student);
+    	while (rSet.next()) {
+    		Test test = new Test();
 
-            Subject subject = new Subject();
-            subject.setCd(rSet.getString("subject_cd"));
-            test.setSubject(subject);
+    		Student student = new Student();
+    		student.setNo(rSet.getString("student_no"));
+    		student.setName(rSet.getString("student_name"));
+    		test.setStudent(student);
 
-            test.setSchool(school);
-            test.setNo(rSet.getInt("no"));
-            test.setPoint(rSet.getInt("point"));
-            test.setClassNum(rSet.getString("class_num"));
+    		test.setClassNum(rSet.getString("class_num"));
+    		test.setSubject(subject);
+    		test.setSchool(school);
+    		test.setNo(num);
 
-            list.add(test);
-        }
+    		// 得点が未登録の場合は 0 にする
+    		Object pointObj = rSet.getObject("point");
+    		test.setPoint(pointObj != null ? rSet.getInt("point") : 0);
 
-        return list;
+    		list.add(test);
+    	}
+
+    	return list;
     }
+
 
     /**
      * 指定された条件に一致する成績情報を複数取得する。
-     *
-     * @param entYear 入学年度（※現状ではSQLに使用していない）
-     * @param classNum クラス番号
-     * @param subject 科目情報
-     * @param num 試験回数
-     * @param school 学校情報
-     * @return 条件に一致するTestオブジェクトのリスト
-     * @throws Exception DBアクセス例外
-     */
-    public List<Test> filter(int entYear, String classNum, Subject subject, int num, School school) throws Exception {
-        List<Test> list = new ArrayList<>();
+     *
+     * @param entYear 入学年度
+     * @param classNum クラス番号
+     * @param subject 科目情報
+     * @param num 試験回数
+     * @param school 学校情報
+     * @return 条件に一致するTestオブジェクトのリスト
+     * @throws Exception DBアクセス例外
+     */
 
-        try (Connection connection = getConnection()) {
-            String sql = baseSql + " AND class_num = ? AND subject_cd = ? AND school_cd = ? AND no = ?";
-            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setString(1, classNum);
-                stmt.setString(2, subject.getCd());
-                stmt.setString(3, school.getCd());
-                stmt.setInt(4, num);
 
-                ResultSet rs = stmt.executeQuery();
-                list = postFilter(rs, school);
-            }
-        }
+    public List<Test> filter(Integer entYear, String classNum, Subject subject, Integer num, School school) throws Exception {
+    	List<Test> list = new ArrayList<>();
 
-        return list;
+    	try (Connection connection = getConnection()) {
+    		String sql =
+    				"SELECT s.no AS student_no, s.name AS student_name, s.class_num, " +
+    				"t.point, t.subject_cd, t.school_cd, t.no " +
+    				"FROM student s " +
+    				"LEFT JOIN test t ON s.no = t.student_no AND t.subject_cd = ? AND t.school_cd = ? AND t.no = ? " +
+    				"WHERE s.ent_year = ? AND s.class_num = ?";
+
+
+    		try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+    			stmt.setString(1, subject.getCd());
+    			stmt.setString(2, school.getCd());
+    			stmt.setInt(3, num);
+    			stmt.setInt(4, entYear);
+    			stmt.setString(5, classNum);
+
+    			ResultSet rs = stmt.executeQuery();
+    			list = postFilter(rs, school, subject, num);
+    		}
+    	}
+
+    	return list;
     }
+
+
 
     /**
      * 成績情報のリストを一括保存する。
@@ -121,38 +163,60 @@ public class TestDao extends Dao {
      * @return 保存成功ならtrue、失敗ならfalse
      * @throws Exception DBアクセス例外
      */
+
     public boolean save(List<Test> list) throws Exception {
-        try (Connection connection = getConnection()) {
-            for (Test test : list) {
-                if (!save(test, connection)) {
-                    return false;
-                }
-            }
-        }
-        return true;
+    	try (Connection connection = getConnection()) {
+    		for (Test test : list) {
+    			if (!save(test, connection)) {
+    				return false;
+    			}
+    		}
+    	}
+    	return true;
     }
 
     /**
-     * 単一の成績情報を保存する。
+     * 単一の成績情報を保存または更新する。
      *
      * @param test 保存対象のTestオブジェクト
      * @param connection DB接続
      * @return 保存成功ならtrue、失敗ならfalse
      * @throws Exception DBアクセス例外
      */
+
     public boolean save(Test test, Connection connection) throws Exception {
-        String sql = "INSERT INTO test (student_no, subject_cd, school_cd, no, point, class_num) VALUES (?, ?, ?, ?, ?, ?)";
+    	Test existing = get(test.getStudent(), test.getSubject(), test.getSchool(), test.getNo(), connection);
+        String sql;
+        if (existing != null) {
+            // UPDATE
+            sql = "UPDATE test SET point = ?, class_num = ? WHERE student_no = ? AND subject_cd = ? AND school_cd = ? AND no = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, test.getPoint());
+                stmt.setString(2, test.getClassNum());
+                stmt.setString(3, test.getStudent().getNo());
+                stmt.setString(4, test.getSubject().getCd());
+                stmt.setString(5, test.getSchool().getCd());
+                stmt.setInt(6, test.getNo());
 
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, test.getStudent().getNo());
-            stmt.setString(2, test.getSubject().getCd());
-            stmt.setString(3, test.getSchool().getCd());
-            stmt.setInt(4, test.getNo());
-            stmt.setInt(5, test.getPoint());
-            stmt.setString(6, test.getClassNum());
+                int rows = stmt.executeUpdate();
+                return rows > 0;
+            }
+        } else {
+            // INSERT
+            sql = "INSERT INTO test (student_no, subject_cd, school_cd, no, point, class_num) VALUES (?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setString(1, test.getStudent().getNo());
+                stmt.setString(2, test.getSubject().getCd());
+                stmt.setString(3, test.getSchool().getCd());
+                stmt.setInt(4, test.getNo());
+                stmt.setInt(5, test.getPoint());
+                stmt.setString(6, test.getClassNum());
 
-            int rows = stmt.executeUpdate();
-            return rows > 0;
+                int rows = stmt.executeUpdate();
+                return rows > 0;
+            }
         }
+//        System.out.println("Saving: " + test.getStudent().getNo() + ", " + test.getPoint());
     }
+
 }
