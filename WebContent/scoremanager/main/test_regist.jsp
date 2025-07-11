@@ -92,19 +92,25 @@
 	    </select>
 	  </div>
 
-	  <div class="filter-block">
-	    <label for="num">回数</label>
-	    <select name="num" id="num">
-	      <option value="">----</option>
-	      <c:forEach var="number" items="${numList}">
-	        <option value="${number}" <c:if test="${param.num == number}">selected</c:if>>${number}</option>
-	      </c:forEach>
-	    </select>
-	  </div>
+	  <!-- 回数と検索ボタンを横並びに配置 -->
+<div style="display: flex; align-items: flex-end; gap: 8px;">
+  <!-- 回数ブロック（ラベル＋セレクト） -->
+  <div class="filter-block">
+    <label for="num">回数</label>
+    <select name="num" id="num">
+      <option value="">----</option>
+      <c:forEach var="number" items="${numList}">
+        <option value="${number}" <c:if test="${param.num == number}">selected</c:if>>${number}</option>
+      </c:forEach>
+    </select>
+  </div>
 
-	<div class="filter-button">
-	  <button type="submit" class="filter-btn">検索</button>
-	</div>
+  <!-- 検索ボタン -->
+  <div class="filter-button">
+    <button type="submit" class="filter-btn">検索</button>
+  </div>
+</div>
+
 	</form>
 	</div>
 
