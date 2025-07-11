@@ -67,18 +67,18 @@
 	  </select>
 
 	  	  <label class="me-2">科目：</label>
-	  <select name="subNum" class="me-4">
+	  <select name="subject" class="me-4">
 	    <option value="">----</option>
-	    <c:forEach var="subject" items="${subNumList}">
-	      <option value="${subject}" <c:if test="${param.subNum == subject}">selected</c:if>>${subject}</option>
+	    <c:forEach var="subject" items="${subjectList}">
+	      <option value="${subject}" <c:if test="${param.subject == subject}">selected</c:if>>${subject}</option>
 	    </c:forEach>
 	  </select>
 
 	  	  <label class="me-2">回数：</label>
-	  <select name="testNum" class="me-4">
+	  <select name="num" class="me-4">
 	    <option value="">----</option>
-	    <c:forEach var="number" items="${testNumList}">
-	      <option value="${number}" <c:if test="${param.testNum == number}">selected</c:if>>${number}</option>
+	    <c:forEach var="number" items="${numList}">
+	      <option value="${number}" <c:if test="${param.num == number}">selected</c:if>>${number}</option>
 	    </c:forEach>
 	  </select>
 
