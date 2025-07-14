@@ -16,16 +16,16 @@
     }
 
     .filter-btn {
-        background-color: #e0e0e0; /* グレー調に */
+        background-color: #555555; /* グレー調に */
         border: 1px solid #aaa;
         padding: 4px 16px;
         border-radius: 4px;
         font-weight: bold;
-        color: #333;
+        color: #fff;
     }
 
     .filter-btn:hover {
-        background-color: #d0d0d0;
+        background-color: #343434;
     }
 
     .table th,
@@ -110,7 +110,7 @@
             <th>氏名</th>
             <th>クラス</th>
             <th>在学中</th>
-            <th>操作</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
