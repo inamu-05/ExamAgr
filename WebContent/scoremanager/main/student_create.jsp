@@ -85,7 +85,7 @@
         </c:if>
 
         <label class="form-label">氏名</label>
-        <input type="text" name="name"  maxlength="30"placeholder="氏名を入力してください" value="${param.name != null ? param.name : name}" required />
+        <input type="text" name="name"  maxlength="10"placeholder="氏名を入力してください" value="${param.name != null ? param.name : name}" required />
         <c:if test="${not empty errorName}">
             <div class="error-message">${errorName}</div>
         </c:if>

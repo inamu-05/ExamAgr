@@ -55,24 +55,30 @@
 </div>
 
 <!-- フィルター -->
+<!-- フィルター -->
 <div style="background: #fff; border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin: 0 16px 16px 16px;">
 <form action="StudentList.action" method="post" class="px-4 mb-3" onsubmit="return validateForm();">
-    <label class="me-2">入学年度：</label>
-    <select name="entYear" class="me-4">
-        <option value="">----</option>
-        <c:forEach var="year" items="${entYearList}">
-            <option value="${year}" <c:if test="${param.entYear == year}">selected</c:if>>${year}</option>
-        </c:forEach>
-    </select>
+    <div class="d-inline-block me-4">
+        <label class="d-block mb-1">入学年度</label>
+        <select name="entYear"style="width: 160px;">
+            <option value="">----</option>
+            <c:forEach var="year" items="${entYearList}">
+                <option value="${year}" <c:if test="${param.entYear == year}">selected</c:if>>${year}</option>
+            </c:forEach>
+        </select>
+    </div>
 
-    <label class="me-2">クラス：</label>
-    <select name="classNum" class="me-4">
-        <option value="">----</option>
-        <c:forEach var="c" items="${classNumList}">
-            <option value="${c}" <c:if test="${param.classNum == c}">selected</c:if>>${c}</option>
-        </c:forEach>
-    </select>
+    <div class="d-inline-block me-4">
+        <label class="d-block mb-1">クラス</label>
+        <select name="classNum">
+            <option value="">----</option>
+            <c:forEach var="c" items="${classNumList}">
+                <option value="${c}" <c:if test="${param.classNum == c}">selected</c:if>>${c}</option>
+            </c:forEach>
+        </select>
+    </div>
 
+    <!-- 在学チェックボックスはそのまま -->
     <label class="me-3">
         <input type="checkbox" name="isAttend" value="true" <c:if test="${param.isAttend == 'true'}">checked</c:if>> 在学中
     </label>
@@ -83,6 +89,7 @@
     <div id="error-message"></div>
 </form>
 </div>
+
 
 <!-- 結果件数 -->
 <c:if test="${fn:length(students) > 0}">
@@ -116,7 +123,7 @@
             <td>${student.classNum}</td>
             <td>
                 <c:choose>
-                    <c:when test="${student.isAttend}">○</c:when>
+                    <c:when test="${student.isAttend}">　○</c:when>
                     <c:otherwise>×</c:otherwise>
                 </c:choose>
             </td>
