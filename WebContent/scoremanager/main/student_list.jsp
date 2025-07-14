@@ -55,7 +55,6 @@
 </div>
 
 <!-- フィルター -->
-<!-- フィルター -->
 <div style="background: #fff; border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin: 0 16px 16px 16px;">
 <form action="StudentList.action" method="post" class="px-4 mb-3" onsubmit="return validateForm();">
     <div class="d-inline-block me-4">

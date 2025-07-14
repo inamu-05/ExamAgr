@@ -70,7 +70,7 @@
 
         <!-- リンク（戻る・学生一覧） -->
         <div class="mt-2" style="text-align: left;">
-            <span style="margin-right: 16px;">
+            <span style="margin-right: 32px;">
                 <a href="StudentCreate.action">戻る</a>
             </span>
             <span>
