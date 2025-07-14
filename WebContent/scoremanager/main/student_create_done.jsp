@@ -6,73 +6,79 @@
   <c:param name="title">得点管理 システム</c:param>
 
   <c:param name="scripts"></c:param>
+
   <c:param name="content">
 
-<style>
-    select, input[type="text"], input[type="number"] {
-        border: 1px solid #ccc;
-        padding: 4px 8px;
-        border-radius: 4px;
-        width: 100%;
-        max-width: 400px;
-    }
+    <!--  CSSスタイル定義 -->
+    <style>
+        select, input[type="text"], input[type="number"] {
+            border: 1px solid #ccc;
+            padding: 4px 8px;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 400px;
+        }
 
-    .submit-btn {
-        background-color: #666;
-        border: 1px solid #444;
-        color: white;
-        padding: 6px 24px;
-        border-radius: 4px;
-        font-weight: bold;
-    }
+        .submit-btn {
+            background-color: #666;
+            border: 1px solid #444;
+            color: white;
+            padding: 6px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
 
-    .submit-btn:hover {
-        background-color: #555;
-    }
+        .submit-btn:hover {
+            background-color: #555;
+        }
 
-    .form-box {
-        background: #fff;
-        border: 1px solid #ccc;
-        padding: 16px;
-        border-radius: 8px;
-        margin: 0 16px 16px 16px;
-        max-width: 500px;
-    }
+        .form-box {
+            background: #fff;
+            border: 1px solid #ccc;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 0 16px 16px 16px;
+            max-width: 500px;
+        }
 
-    .form-label {
-        display: block;
-        margin: 8px 0 4px 0;
-    }
+        .form-label {
+            display: block;
+            margin: 8px 0 4px 0;
+        }
 
-    .message-box {
-        background-color: #e0f7fa;
-        border: 1px solid #4dd0e1;
-        padding: 10px;
-        margin: 16px 0;
-        border-radius: 4px;
-        color: #00796b;
-        max-width: 500px;
-    }
-</style>
+        .message-box {
+            background-color: #e0f7fa;
+            border: 1px solid #4dd0e1;
+            padding: 10px;
+            margin: 16px 0;
+            border-radius: 4px;
+            color: #00796b;
+            max-width: 500px;
+        }
+    </style>
+    <!-- CSSスタイル定義 -->
 
-<section class="me-4">
-    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生情報登録</h2>
+    <!-- メインセクション -->
+    <section class="me-4">
+        <!-- タイトル -->
+        <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生情報登録</h2>
 
-	     <!-- メッセージ表示枠 -->
+        <!-- メッセージ表示枠 -->
+        <p class="text-center" style="background-color:#66CC99">
+            ${message}
+        </p>
 
-	        <p class="text-center" style="background-color:#66CC99">
-	            ${message}
-	        </p>
+        <!-- リンク（戻る・学生一覧） -->
+        <div class="mt-2" style="text-align: left;">
+            <span style="margin-right: 16px;">
+                <a href="StudentCreate.action">戻る</a>
+            </span>
+            <span>
+                <a href="StudentList.action">学生一覧</a>
+            </span>
+        </div>
+    </section>
 
-
-        <div class="mt-2">
-            <a href="StudentCreate.action">戻る</a>
-
-	        <div style="text-align: right;">
-	            <a href="StudentList.action">学生一覧</a>
-	        </div>
-	    </div>
-</section>
-
-</c:param>
+    <!-- メインセクション -->
+  </c:param>
 </c:import>
