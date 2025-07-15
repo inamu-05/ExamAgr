@@ -40,6 +40,10 @@ public class StudentListAction extends Action {
         String entYearParam = req.getParameter("entYear");   // 入学年度
         String classNumParam = req.getParameter("classNum"); // クラス番号
         String isAttendParam = req.getParameter("isAttend"); // 在学中フラグ（"true"なら在学中）
+        System.out.println("検索する年度：" + entYearParam);
+        System.out.println("検索する番号：" + classNumParam);
+        System.out.println("検索するフラグ：" + isAttendParam);
+
 
         // 入学年度（整数型に変換）、空ならnull
         Integer entYear = null;
@@ -56,9 +60,10 @@ public class StudentListAction extends Action {
         StudentDao studentDao = new StudentDao();
         List<Student> studentList;
 
-        if (entYear != null && (classNumParam == null || classNumParam.isEmpty())) {
-            isAttend = true;
-        }
+        System.out.println("検索する年度：" + entYear);
+        System.out.println("検索する番号：" + classNumParam);
+        System.out.println("検索するフラグ：" + isAttend);
+
 
         if (entYear != null && classNumParam != null && !classNumParam.isEmpty()) {
             // 入学年度・クラスともに指定された場合
