@@ -2,24 +2,83 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <c:import url="/common/base.jsp">
-  <c:param name="title">成績登録完了</c:param>
+  <c:param name="title">得点管理 システム</c:param>
 
+  <c:param name="scripts"></c:param>
   <c:param name="content">
-    <section class="me-4">
-      <h2 class="h3 mb-3 fw-normal bg-success bg-opacity-10 py-2 px-4">成績登録完了</h2>
 
-      <div style="background: #fff; border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin: 0 16px;">
-        <c:choose>
-          <c:when test="${success}">
-            <p style="color: green; font-weight: bold;">成績の登録が完了しました。</p>
-          </c:when>
-          <c:otherwise>
-            <p style="color: red; font-weight: bold;">成績の登録に失敗しました。もう一度お試しください。</p>
-          </c:otherwise>
-        </c:choose>
+	<style>
+	    select, input[type="text"], input[type="number"] {
+	        border: 1px solid #ccc;
+	        padding: 4px 8px;
+	        border-radius: 4px;
+	        width: 100%;
+	        max-width: 400px;
+	    }
 
-        <a href="TestRegist.action" class="btn btn-secondary mt-3">戻る</a>
-      </div>
-    </section>
-  </c:param>
+	    .submit-btn {
+	        background-color: #666;
+	        border: 1px solid #444;
+	        color: white;
+	        padding: 6px 24px;
+	        border-radius: 4px;
+	        font-weight: bold;
+	    }
+
+	    .submit-btn:hover {
+	        background-color: #555;
+	    }
+
+	    .form-box {
+	        background: #fff;
+	        border: 1px solid #ccc;
+	        padding: 16px;
+	        border-radius: 8px;
+	        margin: 0 16px 16px 16px;
+	        max-width: 500px;
+	    }
+
+	    .form-label {
+	        display: block;
+	        margin: 8px 0 4px 0;
+	    }
+
+	    .message-box {
+	        background-color: #e0f7fa;
+	        border: 1px solid #4dd0e1;
+	        padding: 10px;
+	        margin: 16px 0;
+	        border-radius: 4px;
+	        color: #00796b;
+	        max-width: 500px;
+	    }
+	</style>
+
+<section class="me-4">
+    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績登録</h2>
+
+    <c:choose>
+        <c:when test="${success}">
+            <p class="text-center" style="background-color:#66CC99">
+                成績の登録が完了しました。
+            </p>
+        </c:when>
+        <c:otherwise>
+            <p class="text-center" style="background-color:#FF9999">
+                成績の登録に失敗しました。もう一度お試しください。
+            </p>
+        </c:otherwise>
+    </c:choose>
+
+    <div class="mt-2">
+    	<span style="margin-right: 32px;">
+        	<a href="TestRegist.action">戻る</a>
+        </span>
+        <span>
+        	<a href="TestList.action">成績参照</a>
+        </span>
+    </div>
+</section>
+
+</c:param>
 </c:import>
