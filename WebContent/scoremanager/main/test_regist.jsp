@@ -166,6 +166,12 @@
   </div>
 </div>
 
+<!-- エラーメッセージ表示（サーバーサイド） -->
+<c:if test="${not empty errorTestSearch}">
+    <div class="text-danger mt-2">${errorTestSearch}</div>
+</c:if>
+
+
 	</form>
 	</div>
 

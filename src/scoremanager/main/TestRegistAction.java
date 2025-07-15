@@ -55,6 +55,44 @@ public class TestRegistAction extends Action {
             String subjectParam = req.getParameter("subject");
             String numParam = req.getParameter("num");
 
+            // ========================
+            // 入力チェック（バリデーション）
+            // ========================
+            // 検索が実行されたかどうか
+            boolean searchAttempted = entYearParam != null || classNumParam != null ||
+                                      subjectParam != null || numParam != null;
+
+            // 入力チェック（バリデーション）
+            if (searchAttempted && (
+                entYearParam == null || entYearParam.isEmpty() ||
+                classNumParam == null || classNumParam.isEmpty() ||
+                subjectParam == null || subjectParam.isEmpty() ||
+                numParam == null || numParam.isEmpty())) {
+
+                req.setAttribute("errorTestSearch", "入学年度・クラス・科目・回数のすべてを選択してください。");
+
+                // プルダウンデータ再取得
+                ClassNumDao classNumDao = new ClassNumDao();
+                List<String> classNumList = classNumDao.filter(school);
+                List<Integer> entYearList = new ArrayList<>();
+                int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+                for (int year = 2020; year <= currentYear; year++) {
+                    entYearList.add(year);
+                }
+                SubjectDao subjectDao = new SubjectDao();
+                List<Subject> subjectList = subjectDao.filter(school);
+                List<Integer> numList = Arrays.asList(1, 2);
+
+                req.setAttribute("classNumList", classNumList);
+                req.setAttribute("entYearList", entYearList);
+                req.setAttribute("subjectList", subjectList);
+                req.setAttribute("numList", numList);
+
+                req.getRequestDispatcher("test_regist.jsp").forward(req, res);
+                return;
+            }
+
+
 //            System.out.println(entYearParam);
 //            System.out.println(classNumParam);
 //            System.out.println(subjectParam);
