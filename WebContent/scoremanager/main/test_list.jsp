@@ -7,7 +7,6 @@
   <c:param name="scripts"></c:param>
 
   <c:param name="content">
-    <!-- スタイル定義 -->
     <style>
       .filter-btn {
         background-color: #e0e0e0;
@@ -17,34 +16,27 @@
         font-weight: bold;
         color: #333;
       }
-
       .filter-btn:hover {
         background-color: #d0d0d0;
       }
     </style>
 
     <section class="me-4">
-
-      <!-- 見出し -->
       <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">
         成績参照
         <c:if test="${isStudentSearch}">（学生）</c:if>
         <c:if test="${isSubjectSearch}">（科目）</c:if>
       </h2>
 
-      <!-- ===== 検索フォーム枠 ===== -->
       <div style="background: #fff; border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin: 0 16px 16px 16px;">
 
-        <!-- === 科目情報検索フォーム === -->
+        <!-- 科目情報検索フォーム -->
         <form action="TestListSubjectExecute.action" method="post" onsubmit="return validateForm();" class="mb-3">
           <div style="display: flex; align-items: flex-end; gap: 24px; margin-bottom: 8px;">
-
-            <!-- 見出し -->
             <div style="display: flex; flex-direction: column; justify-content: flex-end;">
               <span class="fw-bold">科目情報</span>
             </div>
 
-            <!-- 入学年度 -->
             <div style="display: flex; flex-direction: column; min-width: 120px;">
               <label for="entYear">入学年度</label>
               <select name="entYear" id="entYear">
@@ -55,7 +47,6 @@
               </select>
             </div>
 
-            <!-- クラス -->
             <div style="display: flex; flex-direction: column; min-width: 120px;">
               <label for="classNum">クラス</label>
               <select name="classNum" id="classNum">
@@ -66,7 +57,6 @@
               </select>
             </div>
 
-            <!-- 科目 -->
             <div style="display: flex; flex-direction: column; min-width: 120px;">
               <label for="subject">科目</label>
               <select name="subject" id="subject">
@@ -77,29 +67,29 @@
               </select>
             </div>
 
-            <!-- 検索ボタン -->
             <div style="display: flex; align-items: flex-end;">
               <button type="submit" class="filter-btn me-3">検索</button>
             </div>
           </div>
 
-          <!-- バリデーションエラー表示 -->
+          <!-- エラーメッセージ表示（サーバーサイド） -->
+          <c:if test="${not empty errorSubjectSearch}">
+            <div class="text-danger mt-2">${errorSubjectSearch}</div>
+          </c:if>
+
+          <!-- クライアントサイド用エラー領域 -->
           <div id="error-message" class="text-danger mt-2"></div>
         </form>
 
-        <!-- 区切り線 -->
         <hr>
 
-        <!-- === 学生情報検索フォーム === -->
+        <!-- 学生情報検索フォーム -->
         <form action="TestListStudentExecute.action" method="post" onsubmit="return validateForm();">
           <div style="display: flex; align-items: flex-end; gap: 24px; margin-top: 16px;">
-
-            <!-- 見出し -->
             <div style="display: flex; flex-direction: column; justify-content: flex-end;">
               <span class="fw-bold">学生情報</span>
             </div>
 
-            <!-- 学生番号入力欄 -->
             <div style="display: flex; flex-direction: column;">
               <label for="stuNum">学生番号</label>
               <input type="text" id="stuNum" name="stuNum"
@@ -109,30 +99,27 @@
                      required />
             </div>
 
-            <!-- 検索ボタン -->
             <div style="display: flex; align-items: flex-end;">
               <button type="submit" class="filter-btn">検索</button>
             </div>
           </div>
 
-          <!-- エラーメッセージ -->
           <c:if test="${not empty errorStuNum}">
             <div class="error-message text-danger mt-2">${errorStuNum}</div>
           </c:if>
         </form>
       </div>
 
-      <!-- === 初期メッセージ === -->
+      <!-- 初期メッセージ -->
       <c:if test="${empty isStudentSearch and empty isSubjectSearch}">
         <div style="color: #3399FF; font-weight: bold; margin: 16px;">
           科目情報を選択または学生情報を入力して検索ボタンをクリックしてください
         </div>
       </c:if>
 
-      <!-- === 学生検索結果表示 === -->
+      <!-- 学生検索結果 -->
       <c:if test="${isStudentSearch and not empty testListStudent}">
         <div class="px-4 mb-2">学生：${student.name}（${student.no}）</div>
-
         <table class="table mb-5" style="border-collapse: collapse;">
           <thead>
             <tr>
@@ -155,16 +142,14 @@
         </table>
       </c:if>
 
-      <!-- 学生検索結果が0件の場合 -->
       <c:if test="${isStudentSearch and empty testListStudent}">
         <div class="px-4 mb-2">学生：${student.name}（${student.no}）</div>
         <div class="px-4 mb-4 fw-bold">成績情報が存在しませんでした。</div>
       </c:if>
 
-      <!-- === 科目検索結果表示 === -->
+      <!-- 科目検索結果 -->
       <c:if test="${isSubjectSearch and not empty testListSubject}">
         <div class="px-4 mb-2">科目：${subject.name}（${subject.cd}）</div>
-
         <table class="table mb-5" style="border-collapse: collapse;">
           <thead>
             <tr>
@@ -205,11 +190,9 @@
         </table>
       </c:if>
 
-      <!-- 科目検索結果が0件の場合 -->
       <c:if test="${isSubjectSearch and empty testListSubject}">
         <div class="px-4 mb-4 fw-bold">学生情報が存在しませんでした。</div>
       </c:if>
-
     </section>
   </c:param>
 </c:import>

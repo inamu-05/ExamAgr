@@ -59,7 +59,7 @@
 <form action="StudentList.action" method="post" class="px-4 mb-3" onsubmit="return validateForm();">
     <div class="d-inline-block me-4">
         <label class="d-block mb-1">入学年度</label>
-        <select name="entYear"style="width: 160px;">
+        <select name="entYear"style="width: 220px;">
             <option value="">----</option>
             <c:forEach var="year" items="${entYearList}">
                 <option value="${year}" <c:if test="${param.entYear == year}">selected</c:if>>${year}</option>
@@ -69,7 +69,7 @@
 
     <div class="d-inline-block me-4">
         <label class="d-block mb-1">クラス</label>
-        <select name="classNum">
+        <select name="classNum"style="width: 220px;">
             <option value="">----</option>
             <c:forEach var="c" items="${classNumList}">
                 <option value="${c}" <c:if test="${param.classNum == c}">selected</c:if>>${c}</option>
@@ -82,7 +82,7 @@
         <input type="checkbox" name="isAttend" value="true" <c:if test="${param.isAttend == 'true'}">checked</c:if>> 在学中
     </label>
 
-    <button type="submit" class="filter-btn me-3">絞込み</button>
+    <button type="submit" class="filter-btn me-3"style="margin-left: 14px;">絞込み</button>
 
     <!-- エラーメッセージ表示エリア -->
     <div id="error-message"></div>
