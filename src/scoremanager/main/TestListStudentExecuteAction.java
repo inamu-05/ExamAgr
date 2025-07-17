@@ -21,21 +21,42 @@ public class TestListStudentExecuteAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
 
+        // ログインチェック（Teacherオブジェクトがnullか認証されていなければログイン画面へ）
+        if (teacher == null || !teacher.isAuthenticated()) {
+            res.sendRedirect("../login.jsp");
+            return;
+        }
+
+        // リクエストパラメータから学生番号を取得
         String no = req.getParameter("stuNum");
         System.out.println("検索する学生番号：" + no);
+
+        if (no == null || no.isEmpty()) {
+            // 学生番号が未指定ならエラー扱いにするか、リダイレクト等適切な処理を
+            req.setAttribute("message", "学生番号が指定されていません。");
+            req.getRequestDispatcher("TestList.action").forward(req, res);
+            return;
+        }
 
         StudentDao studentDao = new StudentDao();
         Student student = studentDao.get(no);
 
+        if (student == null) {
+            // 学生情報が見つからなければメッセージセットして戻す
+            req.setAttribute("message", "指定された学生情報が見つかりませんでした。");
+            req.getRequestDispatcher("TestList.action").forward(req, res);
+            return;
+        }
 
         TestListStudentDao testListStudentDao = new TestListStudentDao();
         List<TestListStudent> testListStudent = testListStudentDao.filter(student);
 
+        // フラグやデータをリクエストにセット
+        req.setAttribute("isStudentSearch", true);
+        req.setAttribute("student", student);
+        req.setAttribute("testListStudent", testListStudent);
 
-        	req.setAttribute("isStudentSearch", true);
-            req.setAttribute("student", student);
-            req.setAttribute("testListStudent", testListStudent);
-
+        // 元のテスト一覧画面（TestList.action）へフォワード
         req.getRequestDispatcher("TestList.action").forward(req, res);
     }
 }

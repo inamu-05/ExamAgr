@@ -37,8 +37,7 @@ public class TestListAction extends Action {
         String classNumParam = req.getParameter("classNum");
         String subjectCdParam = req.getParameter("subject"); // 科目コード
 
-
-        // 入学年度のパース
+        // 入学年度のパース（nullチェック＋空文字チェック）
         Integer entYear = null;
         if (entYearParam != null && !entYearParam.isEmpty()) {
             entYear = Integer.parseInt(entYearParam);
@@ -51,6 +50,7 @@ public class TestListAction extends Action {
         ClassNumDao classNumDao = new ClassNumDao();
         List<String> classNumList = classNumDao.filter(school);
 
+        // 入学年度リスト作成（2020年から現在年まで）
         List<Integer> entYearList = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
         for (int year = 2020; year <= currentYear; year++) {
