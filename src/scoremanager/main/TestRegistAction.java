@@ -69,35 +69,38 @@ public class TestRegistAction extends Action {
                 subjectParam == null || subjectParam.isEmpty() ||
                 numParam == null || numParam.isEmpty())) {
 
+                // エラーメッセージをセット
                 req.setAttribute("errorTestSearch", "入学年度・クラス・科目・回数のすべてを選択してください。");
 
                 // プルダウンデータ再取得
                 ClassNumDao classNumDao = new ClassNumDao();
                 List<String> classNumList = classNumDao.filter(school);
+
                 List<Integer> entYearList = new ArrayList<>();
                 int currentYear = Calendar.getInstance().get(Calendar.YEAR);
                 for (int year = 2020; year <= currentYear; year++) {
                     entYearList.add(year);
                 }
+
                 SubjectDao subjectDao = new SubjectDao();
                 List<Subject> subjectList = subjectDao.filter(school);
+
                 List<Integer> numList = Arrays.asList(1, 2);
 
+                // リクエスト属性にセット
                 req.setAttribute("classNumList", classNumList);
                 req.setAttribute("entYearList", entYearList);
                 req.setAttribute("subjectList", subjectList);
                 req.setAttribute("numList", numList);
 
+                // 入力画面に戻す
                 req.getRequestDispatcher("test_regist.jsp").forward(req, res);
                 return;
             }
 
-
-//            System.out.println(entYearParam);
-//            System.out.println(classNumParam);
-//            System.out.println(subjectParam);
-//            System.out.println(numParam);
-
+            // ========================
+            // 入力値のパース処理
+            // ========================
 
             // 入学年度（String → Integer）
             Integer entYear = null;
@@ -112,7 +115,7 @@ public class TestRegistAction extends Action {
                 subject = subjectDao.get(subjectParam, school);
             }
 
-            // 回数（String → int）
+            // 回数（String → Integer）
             Integer num = null;
             if (numParam != null && !numParam.isEmpty()) {
                 num = Integer.parseInt(numParam);
@@ -129,29 +132,20 @@ public class TestRegistAction extends Action {
             }
 
             // ==============================
-            // クラス一覧の取得（プルダウン用）
+            // プルダウン用データの取得
             // ==============================
             ClassNumDao classNumDao = new ClassNumDao();
             List<String> classNumList = classNumDao.filter(school);
 
-            // ==============================
-            // 入学年度リストの生成（2020年〜現在）
-            // ==============================
             List<Integer> entYearList = new ArrayList<>();
             int currentYear = Calendar.getInstance().get(Calendar.YEAR);
             for (int year = 2020; year <= currentYear; year++) {
                 entYearList.add(year);
             }
 
-            // ==============================
-            // 科目一覧の取得（プルダウン用）
-            // ==============================
             SubjectDao subjectDao = new SubjectDao();
             List<Subject> subjectList = subjectDao.filter(school);
 
-            // ==============================
-            // 回数一覧の生成（1回・2回）
-            // ==============================
             List<Integer> numList = Arrays.asList(1, 2);
 
             // ==============================
@@ -168,6 +162,7 @@ public class TestRegistAction extends Action {
             dispatcher.forward(req, res);
 
         } catch (Exception e) {
+            // エラー発生時はスタックトレースを出力し、エラーページへ遷移
             e.printStackTrace();
             req.getRequestDispatcher("/error.jsp").forward(req, res);
         }
