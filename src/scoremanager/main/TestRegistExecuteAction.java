@@ -62,7 +62,21 @@ public class TestRegistExecuteAction extends Action {
                 test.setSubject(subject);
                 test.setSchool(school);
                 test.setNo(num);
-                test.setPoint(Integer.parseInt(points[i]));
+                // ここで null チェックを追加（未入力の場合は null をセット）
+                if (points[i] != null && !points[i].isEmpty()) {
+                    String rawPoint = points[i];
+
+                    if (rawPoint == null || rawPoint.trim().isEmpty()) {
+                        // 空欄 → 未受験として null を設定
+                        test.setPoint(null);
+                    } else {
+                        // 数値としてパース（ここでバリデーション済み前提）
+                        test.setPoint(Integer.parseInt(rawPoint.trim()));
+                    }
+
+                } else {
+                    test.setPoint(null);
+                }
 
                 testList.add(test);
             }

@@ -181,7 +181,7 @@
 	    科目：${tests[0].subject.name}（${tests[0].no}回）
 	  </div>
 	  <form action="TestRegistExecute.action" method="post">
-	    <table class="table table-bordered mt-4">
+	    <table class="table table-hover">
 	      <thead>
 	        <tr>
 	          <th>入学年度</th>
@@ -202,7 +202,9 @@
 	            </td>
 	            <td>${test.student.name}</td>
 				<td>
-				  <input type="number" name="point" class="point-input" value="${test.point}" min="0" max="100" required />
+				  <input type="number" name="point" class="point-input"
+  					value="<c:if test='${test.point != null}'>${test.point}</c:if>"
+  					min="0" max="100" />
 				  <input type="hidden" name="classNum" value="${test.classNum}" />
 				  <div class="error-message" style="display:none;">0～100の範囲で入力してください</div>
 				</td>
