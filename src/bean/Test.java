@@ -33,7 +33,7 @@ public class Test implements Serializable {
 	/**
 	 * 得点:int
 	 */
-	private int point;
+	private Integer point;
 
 
 	/**
@@ -79,11 +79,11 @@ public class Test implements Serializable {
 		this.no = no;
 	}
 
-	public int getPoint() {
+	public Integer getPoint() {
 		return point;
 	}
 
-	public void setPoint(int point) {
+	public void setPoint(Integer point) {
 		this.point = point;
 	}
 

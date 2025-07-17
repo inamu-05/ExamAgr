@@ -105,8 +105,11 @@ public class TestDao extends Dao {
 
     		// 得点が未登録の場合は 0 にする
     		Object pointObj = rSet.getObject("point");
-    		test.setPoint(pointObj != null ? rSet.getInt("point") : 0);
-
+    		if (pointObj != null) {
+    		    test.setPoint(rSet.getInt("point"));
+    		} else {
+    		    test.setPoint(null);
+    		}
     		list.add(test);
     	}
 
@@ -191,7 +194,11 @@ public class TestDao extends Dao {
             // UPDATE
             sql = "UPDATE test SET point = ?, class_num = ? WHERE student_no = ? AND subject_cd = ? AND school_cd = ? AND no = ?";
             try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-                stmt.setInt(1, test.getPoint());
+            	if (test.getPoint() == null) {
+            	    stmt.setNull(1, java.sql.Types.INTEGER);
+            	} else {
+            	    stmt.setInt(1, test.getPoint());
+            	}
                 stmt.setString(2, test.getClassNum());
                 stmt.setString(3, test.getStudent().getNo());
                 stmt.setString(4, test.getSubject().getCd());
@@ -209,7 +216,11 @@ public class TestDao extends Dao {
                 stmt.setString(2, test.getSubject().getCd());
                 stmt.setString(3, test.getSchool().getCd());
                 stmt.setInt(4, test.getNo());
-                stmt.setInt(5, test.getPoint());
+                if (test.getPoint() == null) {
+                    stmt.setNull(5, java.sql.Types.INTEGER);
+                } else {
+                    stmt.setInt(5, test.getPoint());
+                }
                 stmt.setString(6, test.getClassNum());
 
                 int rows = stmt.executeUpdate();
