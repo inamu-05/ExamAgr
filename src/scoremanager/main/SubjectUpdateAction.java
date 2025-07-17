@@ -9,31 +9,36 @@ import bean.Teacher;
 import dao.SubjectDao;
 import tool.Action;
 
+/**
+ * 科目更新画面表示アクション
+ * 指定された科目コードに該当する科目情報を取得し、
+ * 更新画面（subject_update.jsp）に渡す。
+ */
 public class SubjectUpdateAction extends Action {
 
-  public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+    @Override
+    public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-    HttpSession session = req.getSession();
+        // セッションからユーザー情報を取得
+        HttpSession session = req.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("user");
 
-    Teacher teacher = (Teacher) session.getAttribute("user");
+        // パラメータから科目コードを取得
+        String cd = req.getParameter("cd");
 
-    String cd = req.getParameter("cd");
+        // 科目DAOから該当する科目情報を取得（ログイン教員の学校コードも使用）
+        SubjectDao dao = new SubjectDao();
+        Subject subject = dao.get(cd, teacher.getSchool());
 
-    SubjectDao dao = new SubjectDao();
+        // 科目が見つからなかった場合、エラーメッセージをセット
+        if (subject == null) {
+            req.setAttribute("message", "指定された科目は存在しません。");
+        }
 
-    Subject subject = dao.get(cd, teacher.getSchool());
+        // 科目情報をリクエストスコープに保存
+        req.setAttribute("subject", subject);
 
-    if (subject == null) {
-
-      req.setAttribute("message", "科目が存在していません");
-
+        // 更新画面にフォワード
+        req.getRequestDispatcher("subject_update.jsp").forward(req, res);
     }
-
-    req.setAttribute("subject", subject);
-
-    req.getRequestDispatcher("subject_update.jsp").forward(req, res);
-
-  }
-
 }
-

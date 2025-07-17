@@ -73,7 +73,7 @@ public class StudentCreateExeciteAction extends Action {
         } else {
             // 登録失敗時：エラーメッセージをセットし、入力画面へ戻す
             req.setAttribute("error", "登録に失敗しました。");
-            req.getRequestDispatcher("student_create.jsp").forward(req, res);
+            req.getRequestDispatcher("StudentCreate.action").forward(req, res);
         }
     }
 }

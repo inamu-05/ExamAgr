@@ -12,6 +12,11 @@ import bean.Teacher;
 import dao.SubjectDao;
 import tool.Action;
 
+/**
+ * 科目一覧表示アクション
+ * ログインユーザーの所属学校に紐づく科目の一覧を取得し、
+ * 一覧画面（subject_list.jsp）に渡す。
+ */
 public class SubjectListAction extends Action {
 
     @Override
@@ -20,26 +25,26 @@ public class SubjectListAction extends Action {
         // セッション取得
         HttpSession session = req.getSession();
 
-        // ログインユーザー取得（Teacher）
+        // ログイン中の教員情報（Teacherインスタンス）を取得
         Teacher teacher = (Teacher) session.getAttribute("user");
+
+        // 未ログインまたは認証失敗時はログイン画面へリダイレクト
         if (teacher == null || !teacher.isAuthenticated()) {
             res.sendRedirect("../login.jsp");
             return;
         }
 
-        // 所属学校を取得
+        // 教員の所属学校情報を取得
         School school = teacher.getSchool();
 
-        // DAOを使って科目リスト取得
+        // 科目DAOを使用して、該当学校の科目一覧を取得
         SubjectDao dao = new SubjectDao();
-        List<Subject> subjects = dao.filter(school);  // ← これが大事！
+        List<Subject> subjects = dao.filter(school);
 
-        // リクエストに渡す
+        // 科目一覧をリクエストスコープにセット
         req.setAttribute("subjects", subjects);
 
-        // JSPへフォワード
+        // 一覧表示JSPにフォワード
         req.getRequestDispatcher("subject_list.jsp").forward(req, res);
     }
 }
-
-
