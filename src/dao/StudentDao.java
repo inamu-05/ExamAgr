@@ -9,10 +9,16 @@ import java.util.List;
 import bean.School;
 import bean.Student;
 
+/**
+ * 学生情報を管理するDAOクラス
+ */
 public class StudentDao extends Dao {
 
     /**
-     * getメソッド 学生IDを指定して学生インスタンスを1件取得する
+     * 学生IDを指定して1件の学生情報を取得する
+     *
+     * @param no 学生番号
+     * @return 学生情報（存在しない場合はnull）
      */
     public Student get(String no) throws Exception {
         Student student = null;
@@ -20,7 +26,9 @@ public class StudentDao extends Dao {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("SELECT * FROM student WHERE no = ?");
+            statement = connection.prepareStatement(
+                "SELECT * FROM student WHERE no = ?"
+            );
             statement.setString(1, no);
             ResultSet resultSet = statement.executeQuery();
 
@@ -36,11 +44,16 @@ public class StudentDao extends Dao {
             if (statement != null) statement.close();
             if (connection != null) connection.close();
         }
+
         return student;
     }
 
     /**
-     * 検索結果をStudentリストに詰め替える
+     * 検索結果をStudentリストに詰め替える共通処理
+     *
+     * @param resultSet SQLの実行結果
+     * @param school 学校情報（所属学校）
+     * @return 学生リスト
      */
     public List<Student> postFilter(ResultSet resultSet, School school) throws Exception {
         List<Student> list = new ArrayList<>();
@@ -56,11 +69,12 @@ public class StudentDao extends Dao {
 
             list.add(student);
         }
+
         return list;
     }
 
     /**
-     * 学校・入学年度・クラス・在学フラグで絞り込み
+     * 学校・入学年度・クラス・在学フラグで学生を絞り込み取得
      */
     public List<Student> filter(School school, int entYear, String classNum, boolean isAttend) throws Exception {
         List<Student> list = new ArrayList<>();
@@ -86,7 +100,7 @@ public class StudentDao extends Dao {
     }
 
     /**
-     * 学校・入学年度・在学フラグで絞り込み
+     * 学校・入学年度・在学フラグで学生を絞り込み取得
      */
     public List<Student> filter(School school, int entYear, boolean isAttend) throws Exception {
         List<Student> list = new ArrayList<>();
@@ -111,7 +125,7 @@ public class StudentDao extends Dao {
     }
 
     /**
-     * 学校・在学フラグで絞り込み
+     * 学校・在学フラグで学生を絞り込み取得
      */
     public List<Student> filter(School school, boolean isAttend) throws Exception {
         List<Student> list = new ArrayList<>();
@@ -135,7 +149,10 @@ public class StudentDao extends Dao {
     }
 
     /**
-     * 学生情報をINSERTまたはUPDATE
+     * 学生情報をINSERTまたはUPDATEする（学生番号が存在するかで分岐）
+     *
+     * @param student 学生情報
+     * @return 成功時 true、失敗時 false
      */
     public boolean save(Student student) throws Exception {
         Connection connection = null;
@@ -150,6 +167,7 @@ public class StudentDao extends Dao {
             statement = connection.prepareStatement(checkSql);
             statement.setString(1, student.getNo());
             ResultSet rs = statement.executeQuery();
+
             boolean exists = false;
             if (rs.next()) {
                 exists = rs.getInt(1) > 0;

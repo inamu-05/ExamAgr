@@ -22,7 +22,7 @@ public class StudentListAction extends Action {
 
         HttpSession session = req.getSession();
 
-        // セッションからユーザー情報(Teacherインスタンス)を取得
+        // セッションからユーザー情報（Teacherインスタンス）を取得
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         // 未ログインまたは認証失敗時、ログイン画面にリダイレクト
@@ -37,54 +37,53 @@ public class StudentListAction extends Action {
         // ==============================
         // 検索条件パラメータを取得
         // ==============================
-        String entYearParam = req.getParameter("entYear");   // 入学年度
-        String classNumParam = req.getParameter("classNum"); // クラス番号
-        String isAttendParam = req.getParameter("isAttend"); // 在学中フラグ（"true"なら在学中）
+        String entYearParam   = req.getParameter("entYear");   // 入学年度
+        String classNumParam  = req.getParameter("classNum");  // クラス番号
+        String isAttendParam  = req.getParameter("isAttend");  // 在学中フラグ
+
+        // デバッグ出力
         System.out.println("検索する年度：" + entYearParam);
         System.out.println("検索する番号：" + classNumParam);
         System.out.println("検索するフラグ：" + isAttendParam);
 
-
-        // 入学年度（整数型に変換）、空ならnull
+        // ==============================
+        // パラメータの整形・変換
+        // ==============================
+        // 入学年度（nullまたはInteger）
         Integer entYear = null;
         if (entYearParam != null && !entYearParam.isEmpty()) {
             entYear = Integer.parseInt(entYearParam);
         }
 
-        // 在学中フラグ（true または false）
+        // 在学中フラグ：文字列 "true" を boolean に変換
         boolean isAttend = "true".equals(isAttendParam);
 
         // ==============================
-        // 学生リストを検索条件に応じて取得
+        // 学生情報の検索（条件によって分岐）
         // ==============================
         StudentDao studentDao = new StudentDao();
         List<Student> studentList;
 
-        System.out.println("検索する年度：" + entYear);
-        System.out.println("検索する番号：" + classNumParam);
-        System.out.println("検索するフラグ：" + isAttend);
-
-
         if (entYear != null && classNumParam != null && !classNumParam.isEmpty()) {
-            // 入学年度・クラスともに指定された場合
+            // 入学年度・クラス番号の両方が指定された場合
             studentList = studentDao.filter(school, entYear, classNumParam, isAttend);
         } else if (entYear != null) {
-            // 入学年度だけ指定された場合
+            // 入学年度のみ指定された場合
             studentList = studentDao.filter(school, entYear, isAttend);
         } else {
-            // どちらも指定されていない場合（学校ごとの在学中 or 非在学中全件表示）
+            // 両方未指定（学校全体の在学/非在学者を取得）
             studentList = studentDao.filter(school, isAttend);
         }
 
         // ==============================
-        // クラス一覧を取得（プルダウン用）
+        // クラス一覧の取得（プルダウン表示用）
         // ==============================
         ClassNumDao classNumDao = new ClassNumDao();
         List<String> classNumList = classNumDao.filter(school);
 
         // ==============================
-        // 入学年度リスト生成（プルダウン用）
-        // 2020年～現在の西暦までをリスト化
+        // 入学年度リストの生成（プルダウン用）
+        // 例：2020～今年（西暦）のリスト
         // ==============================
         List<Integer> entYearList = new ArrayList<>();
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
@@ -93,13 +92,13 @@ public class StudentListAction extends Action {
         }
 
         // ==============================
-        // JSPに渡すデータをリクエストにセット
+        // JSP にデータをセットして画面遷移
         // ==============================
-        req.setAttribute("students", studentList);     // 検索結果の学生リスト
-        req.setAttribute("classNumList", classNumList); // クラスのプルダウン用リスト
-        req.setAttribute("entYearList", entYearList);   // 入学年度のプルダウン用リストお
+        req.setAttribute("students", studentList);         // 学生一覧
+        req.setAttribute("classNumList", classNumList);    // クラス一覧（プルダウン）
+        req.setAttribute("entYearList", entYearList);      // 入学年度一覧（プルダウン）
 
-        // 学生一覧画面にフォワード
+        // 学生一覧画面に遷移
         req.getRequestDispatcher("student_list.jsp").forward(req, res);
     }
 }

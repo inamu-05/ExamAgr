@@ -15,7 +15,9 @@ import tool.Action;
 
 /**
  * 学生情報登録画面表示アクション
- * 学生情報登録フォームに必要なデータ（クラス一覧・入学年度リスト）を準備し、登録画面に遷移する
+ *
+ * 学生情報登録フォームに必要なデータ（クラス一覧・入学年度リスト）を準備し、
+ * JSPに渡して登録画面に遷移させる処理。
  */
 public class StudentCreateAction extends Action {
 
@@ -24,41 +26,43 @@ public class StudentCreateAction extends Action {
 
         HttpSession session = req.getSession();
 
-        // セッションからログイン中のユーザー情報(Teacherインスタンス)を取得
+        // セッションからログインユーザー（Teacher）を取得
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        // 未ログインまたは認証失敗時は、ログイン画面にリダイレクト
+        // 未ログインまたは認証エラー時はログイン画面へリダイレクト
         if (teacher == null || !teacher.isAuthenticated()) {
             res.sendRedirect("../login.jsp");
             return;
         }
 
-        // ログインユーザーの所属学校情報を取得
+        // 所属学校情報を取得
         School school = teacher.getSchool();
 
         // ==============================
-        // クラス一覧を取得（プルダウン用）
+        // クラス一覧を取得（プルダウン表示用）
         // ==============================
         ClassNumDao classNumDao = new ClassNumDao();
         List<String> classNumList = classNumDao.filter(school);
 
         // ==============================
-        // 入学年度リスト生成（プルダウン用）
-        // 2020年～現在の西暦までをリスト化
+        // 入学年度リストの生成（2020年〜現在＋10年）
         // ==============================
         List<Integer> entYearList = new ArrayList<>();
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);  // 現在の西暦
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+
         for (int year = currentYear - 10; year <= currentYear + 10; year++) {
             entYearList.add(year);
         }
 
         // ==============================
-        // JSPに渡すデータをリクエストにセット
+        // JSPに渡すデータをリクエスト属性に設定
         // ==============================
-        req.setAttribute("classNumList", classNumList); // クラス一覧（プルダウン用）
-        req.setAttribute("entYearList", entYearList);   // 入学年度一覧（プルダウン用）
+        req.setAttribute("classNumList", classNumList); // クラス一覧
+        req.setAttribute("entYearList", entYearList);   // 入学年度一覧
 
-        // 学生登録画面にフォワード
+        // ==============================
+        // 学生登録画面にフォワード（表示遷移）
+        // ==============================
         req.getRequestDispatcher("student_create.jsp").forward(req, res);
     }
 }
