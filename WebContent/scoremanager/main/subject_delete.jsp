@@ -6,7 +6,7 @@
 
     <c:param name="content">
         <section class="me-4">
-            <h2 class="h3 mb-3 fw-normal bg-danger bg-opacity-10 py-2 px-4">科目情報削除</h2>
+            <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #ffd3a8;">科目情報削除</h2>
 
                 <div class="mb-3">
                     「<strong><c:out value="${subject.name}" /></strong>（<strong><c:out value="${subject.cd}" /></strong>）」を削除してもよろしいですか？
