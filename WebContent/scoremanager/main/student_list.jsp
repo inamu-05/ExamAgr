@@ -16,7 +16,7 @@
     }
 
     .filter-btn {
-        background-color: #555555; /* グレー調に */
+        background-color:#ffc1ff;
         border: 1px solid #aaa;
         padding: 4px 16px;
         border-radius: 4px;
@@ -49,7 +49,7 @@
 </style>
 
 <section class="me-4">
-<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生管理</h2>
+<h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #ffffe5;">学生管理</h2>
 <div style="text-align: right;">
     <a href="StudentCreate.action">新規登録</a>
 </div>
