@@ -49,7 +49,7 @@
 </style>
 
 <section class="me-4">
-<h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #ffffe5;">学生管理</h2>
+<h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #ffd6ff;">学生管理</h2>
 <div style="text-align: right;">
     <a href="StudentCreate.action">新規登録</a>
 </div>

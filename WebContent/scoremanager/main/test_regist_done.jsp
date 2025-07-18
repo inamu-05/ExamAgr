@@ -55,7 +55,7 @@
 	</style>
 
 <section class="me-4">
-    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績登録</h2>
+    <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #d1e8ff;">成績登録</h2>
 
     <c:choose>
         <c:when test="${success}">
