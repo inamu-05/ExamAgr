@@ -29,25 +29,38 @@ public class SubjectUpdateExecuteAction extends Action {
         String name = req.getParameter("name");
         String schoolCd = req.getParameter("school_cd");
 
+        // デバッグ用出力：入力値確認
+        System.out.println("[DEBUG] 受信科目コード: " + cd);
+        System.out.println("[DEBUG] 受信科目名: " + name);
+        System.out.println("[DEBUG] 受信学校コード: " + schoolCd);
+
         SubjectDao dao = new SubjectDao();
 
-        // 指定された科目コードで科目情報が存在するか確認（ログインユーザーの所属学校で絞り込み）
+        // 指定された科目コードで科目情報を取得（ログインユーザーの学校に限定）
         Subject subject = dao.get(cd, teacher.getSchool());
+
+        // デバッグ用出力：取得結果確認
+        if (subject != null) {
+            System.out.println("[DEBUG] 対象科目が存在: " + subject.getCd() + " / " + subject.getName());
+        } else {
+            System.out.println("[DEBUG] 指定された科目が存在しません。");
+        }
 
         // 科目が存在しない場合はエラーメッセージをセットして更新画面へ戻す
         if (subject == null) {
             req.setAttribute("message", "指定された科目は存在しません。");
 
-            // 新規作成のためフォーム入力値を保持
+            // 新規作成用に入力内容を保持したSubjectを作成
             subject = new Subject();
             subject.setCd(cd);
             subject.setName(name);
+
             School school = new School();
             school.setCd(schoolCd);
             subject.setSchool(school);
 
             req.setAttribute("subject", subject);
-            req.getRequestDispatcher("/subject/subject_update.jsp").forward(req, res);
+            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
             return;
         }
 
@@ -55,29 +68,27 @@ public class SubjectUpdateExecuteAction extends Action {
         if (name == null || name.trim().isEmpty()) {
             req.setAttribute("message", "科目名を入力してください");
 
-            // 空文字をセットし直し、入力画面へ戻す
+            // 入力を戻すためにセット
             subject.setName("");
             req.setAttribute("subject", subject);
-            req.getRequestDispatcher("/subject/subject_update.jsp").forward(req, res);
+            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
             return;
         }
 
-        // 科目名を更新対象にセット
+        // 科目名を更新して保存
         subject.setName(name);
-
-        // DAOのsaveメソッドで更新処理を実行
         boolean result = dao.save(subject);
 
         if (result) {
-            // 更新成功時は完了画面へ遷移
+            // 成功メッセージとともに完了画面へ
             req.setAttribute("subject", subject);
             req.setAttribute("message", "更新が完了しました。");
             req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);
         } else {
-            // 更新失敗時はエラーメッセージをセットして更新画面へ戻す
+            // 更新失敗時
             req.setAttribute("message", "更新に失敗しました。");
             req.setAttribute("subject", subject);
-            req.getRequestDispatcher("/subject/subject_update.jsp").forward(req, res);
+            req.getRequestDispatcher("subject_update.jsp").forward(req, res);
         }
     }
 }

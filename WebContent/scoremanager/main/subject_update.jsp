@@ -65,21 +65,37 @@
 <section class="me-4">
     <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 
-    <c:if test="${not empty message}">
-        <div class="error-message">${message}</div>
-    </c:if>
-
     <form action="SubjectUpdateExecute.action" method="post">
 
-        <!-- 科目コード 表示のみ（枠なし） -->
+        <!-- 科目コード 表示のみ -->
         <label class="form-label">科目コード</label>
-        <div style="margin-bottom: 12px;">${subject.cd}</div>
-        <input type="hidden" name="cd" value="${subject.cd}" />
+        <div style="margin-bottom: 4px;">
+            <c:choose>
+                <c:when test="${not empty subject and not empty subject.cd}">
+                    ${subject.cd}
+                </c:when>
+                <c:otherwise>
+                    ${param.cd}
+                </c:otherwise>
+            </c:choose>
+        </div>
+
+        <!-- メッセージを科目コードの下に表示 -->
+        <c:if test="${not empty message}">
+            <div class="error-message">${message}</div>
+        </c:if>
+
+        <!-- 隠しパラメータ: cd -->
+        <input type="hidden" name="cd" value="<c:choose>
+            <c:when test='${not empty subject and not empty subject.cd}'>${subject.cd}</c:when>
+            <c:otherwise>${param.cd}</c:otherwise>
+        </c:choose>" />
 
         <!-- 科目名編集 -->
         <label class="form-label">科目名</label>
         <input type="text" name="name" value="${subject.name}" required />
 
+        <!-- 学校コード -->
         <input type="hidden" name="school_cd" value="${subject.school.cd}" />
 
         <div style="margin-top: 12px;">
