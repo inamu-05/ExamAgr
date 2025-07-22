@@ -30,6 +30,9 @@ public class ClassListAction extends Action {
         // ログインユーザーの所属学校情報を取得
         School school = teacher.getSchool();
 
+        System.out.println("学校コード: " + school.getCd());
+        System.out.println("学校名: " + school.getName());
+
 
         // ==============================
         // クラス一覧の取得（プルダウン表示用）
@@ -42,6 +45,7 @@ public class ClassListAction extends Action {
         // JSP にデータをセットして画面遷移
         // ==============================
         req.setAttribute("classNumList", classNumList);    // クラス一覧（プルダウン）
+        req.setAttribute("school", school);
 
         // 学生一覧画面に遷移
         req.getRequestDispatcher("class_list.jsp").forward(req, res);
