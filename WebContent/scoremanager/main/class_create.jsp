@@ -63,7 +63,7 @@
 </style>
 
 <section class="me-4">
-    <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">クラス登録</h2>
+    <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #edffdb;">クラス登録</h2>
 
     <form action="ClassCreateExecute.action" method="post">
 

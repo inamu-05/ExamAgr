@@ -56,7 +56,7 @@
 </style>
 
 <section class="me-4">
-    <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #ffd6ff;">学生情報登録</h2>
+    <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #ffdbe7;">学生情報登録</h2>
 
 	     <!-- メッセージ表示枠 -->
 

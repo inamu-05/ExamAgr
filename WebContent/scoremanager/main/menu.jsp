@@ -14,7 +14,7 @@
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">メニュー</h2>
 			<div class="row text-center px-4 fs-3 my-5">
 				<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
-					style="height: 10rem; background-color: #ffd6ff;">
+					style="height: 10rem; background-color: #ffdbe7;">
 					<a href="StudentList.action">学生管理</a>
 				</div>
 				<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
@@ -34,7 +34,7 @@
 					<a href="SubjectList.action">科目管理</a>
 				</div>
 				<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
-					style="height: 10rem; background-color: #ffd6ff;">
+					style="height: 10rem; background-color: #edffdb;">
 					<a href="ClassList.action">クラス管理</a>
 				</div>
 
