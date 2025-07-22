@@ -26,7 +26,7 @@
     }
 
     .filter-btn:hover {
-        background-color: #343434;
+        background-color: #d0d0d0;
     }
 
     .table th,
