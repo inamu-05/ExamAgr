@@ -16,12 +16,13 @@
     }
 
     .filter-btn {
-        background-color:#ffc1ff;
+        background-color:#e0e0e0;
         border: 1px solid #aaa;
+
         padding: 4px 16px;
         border-radius: 4px;
         font-weight: bold;
-        color: #fff;
+        color: #333;
     }
 
     .filter-btn:hover {
