@@ -47,12 +47,31 @@
         color: orange;
         margin-top: 8px;
     }
+
+    .custom-button {
+	    background-color: #ff9ece;
+	    color: black;
+	    text-decoration: none;
+	    border-radius: 2rem;
+	    font-weight: bold;
+	    transition: 0.3s;
+	    display: inline-block;
+	    border: 2px solid black;
+	    padding: 0.5rem 1.5rem;
+	    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+	}
+
+	.custom-button:hover {
+	    background-color: #ff89c4;
+	    color: black;
+	}
+
 </style>
 
 <section class="me-4">
 <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #ffdbe7;">学生管理</h2>
-<div style="text-align: right;">
-    <a href="StudentCreate.action">新規登録</a>
+<div style="text-align: right; margin-bottom: 16px;">
+    <a href="StudentCreate.action" class="custom-button">＋ 新規登録</a>
 </div>
 
 <!-- フィルター -->

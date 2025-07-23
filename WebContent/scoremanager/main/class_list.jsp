@@ -18,6 +18,7 @@
 
   .custom-button:hover {
     background-color: #a1eea1;
+    color: black;
   }
 </style>
 
