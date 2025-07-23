@@ -99,9 +99,6 @@
     <a href="StudentList.action" class="sidebar-button sidebar-student">学生管理</a>
   </li>
   <li class="nav-item">
-    <span class="sidebar-label grade-label">成績管理</span>
-  </li>
-  <li class="nav-item">
     <a href="TestRegist.action" class="sidebar-button sidebar-grade">成績登録</a>
   </li>
   <li class="nav-item">
