@@ -99,10 +99,10 @@
     <a href="StudentList.action" class="sidebar-button sidebar-student">学生管理</a>
   </li>
   <li class="nav-item">
-    <a href="TestRegist.action" class="sidebar-button sidebar-grade">成績登録</a>
+    <a href="TestRegist.action" class="sidebar-button sidebar-grade">成績管理 / 成績登録</a>
   </li>
   <li class="nav-item">
-    <a href="TestList.action" class="sidebar-button sidebar-grade">成績参照</a>
+    <a href="TestList.action" class="sidebar-button sidebar-grade">成績管理 / 成績参照</a>
   </li>
   <li class="nav-item">
     <a href="SubjectList.action" class="sidebar-button sidebar-subject">科目管理</a>

@@ -112,7 +112,7 @@
 
 
 	    <section class="me-4">
-	<h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #d1e8ff;">成績管理</h2>
+	<h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #d1e8ff;">成績登録</h2>
 
 	<!-- フィルター -->
 	<div style="background: #fff; border: 1px solid #ccc; padding: 16px; border-radius: 8px; margin: 0 16px 16px 16px;">
