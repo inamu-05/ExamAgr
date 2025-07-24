@@ -26,17 +26,20 @@ public class ClassCreateExecuteAction extends Action {
         String classNumStr = req.getParameter("classNum");
         boolean hasError = false;
 
-        // 入力チェック（空・3桁数字のみ）
+        // 入力チェック（空・3桁数字）
         if (classNumStr == null || !classNumStr.matches("^\\d{3}$")) {
-            req.setAttribute("errorClassNum", "クラス番号は3桁の数字で入力してください（例: 001）。");
+            req.setAttribute("errorClassNum", "クラス番号は3桁の数字で入力してください（例: 100）。");
             hasError = true;
         } else {
             int classNum = Integer.parseInt(classNumStr);
-            if (classNum < 1 || classNum > 999) {
-                req.setAttribute("errorClassNum", "クラス番号は001〜999の範囲で入力してください。");
+
+            // 先頭が1または2（=100〜299）
+            if (classNum < 100 || classNum > 299) {
+                req.setAttribute("errorClassNum", "クラス番号の先頭は1または2にしてください（100〜299の範囲）。");
                 hasError = true;
             }
 
+            // 重複チェック
             if (!hasError) {
                 School school = teacher.getSchool();
                 ClassNumDao dao = new ClassNumDao();
