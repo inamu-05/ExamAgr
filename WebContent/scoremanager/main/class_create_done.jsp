@@ -61,7 +61,7 @@
     <!-- メインセクション -->
     <section class="me-4">
         <!-- タイトル -->
-        <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #edffdb;">学生情報登録</h2>
+        <h2 class="h3 mb-3 fw-normal py-2 px-4" style="background-color: #edffdb;">クラス登録</h2>
 
         <!-- メッセージ表示枠 -->
         <p class="text-center" style="background-color:#66CC99">

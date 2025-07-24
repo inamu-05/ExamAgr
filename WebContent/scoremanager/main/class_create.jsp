@@ -4,9 +4,7 @@
 
 <c:import url="/common/base.jsp">
   <c:param name="title">得点管理システム</c:param>
-
   <c:param name="scripts"> </c:param>
-
   <c:param name="content">
 
 <style>
@@ -67,8 +65,9 @@
 
     <form action="ClassCreateExecute.action" method="post">
 
-        <label class="form-label">クラス番号</label>
-        <input type="number" name="classNum" min="1" max="999" maxlength="3"
+        <label class="form-label">クラス番号（3桁）</label>
+        <input type="text" name="classNum" maxlength="3"
+               pattern="^\d{3}$"
                placeholder="クラス番号を入力してください"
                value="${param.classNum != null ? param.classNum : classNum}" required />
 
