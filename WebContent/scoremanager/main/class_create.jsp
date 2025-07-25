@@ -66,8 +66,7 @@
     <form action="ClassCreateExecute.action" method="post">
 
         <label class="form-label">クラス番号（3桁）</label>
-        <input type="text" name="classNum" maxlength="3"
-               pattern="^\d{3}$"
+        <input type="text" name="classNum"
                placeholder="クラス番号を入力してください"
                value="${param.classNum != null ? param.classNum : classNum}" required />
 

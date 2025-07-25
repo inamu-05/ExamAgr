@@ -26,9 +26,12 @@ public class ClassCreateExecuteAction extends Action {
         String classNumStr = req.getParameter("classNum");
         boolean hasError = false;
 
-        // 入力チェック（空・3桁数字）
-        if (classNumStr == null || !classNumStr.matches("^\\d{3}$")) {
-            req.setAttribute("errorClassNum", "クラス番号は3桁の数字で入力してください（例: 100）。");
+        // 入力チェック（3桁の数字、先頭は1または2）
+        if (classNumStr == null || !classNumStr.matches("^\\d+$")) {
+            req.setAttribute("errorClassNum", "クラス番号は半角数字で入力してください。");
+            hasError = true;
+        } else if (classNumStr.length() != 3) {
+            req.setAttribute("errorClassNum", "クラス番号は必ず3桁で入力してください。");
             hasError = true;
         } else {
             int classNum = Integer.parseInt(classNumStr);
